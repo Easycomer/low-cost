@@ -1,0 +1,62 @@
+\documentclass{article}
+\usepackage{amsmath}
+\begin{document}
+\title{Solution2}
+\maketitle
+\section{Problem}
+In this senario, we consider the problem to find the most money-saving way to acquire the data inorder to achieve a satisfactory regret bound $R$. The objective function is in the form of a integral, which is not an easy problem of the classical optimization problem. Besides, to solve the very exact form of the budget . Thus we use the of the budget B as following
+\begin{equation}
+\sum_t c_t q_t \leq B \leq \sum_t Mq_t
+\end{equation}
+Thus what we have to do is to solve the optimization problem of the form
+\begin{align}
+&\min_{q_t} c_t\\
+s.t. &\sum_t \frac{\nabla f_t^2}{q_t}\leq R\\
+	&0\leq q_t \leq 1
+\end{align}
+\section{Solution}
+Consider the convexity of the objective function, we give the Lagrangian
+\begin{equation}
+L=\sum_t c_t q_t -\lambda(-\sum_t\frac{\nabla f_t^2}{q_t}+R-\sum_t\mu_t(1-q_t))
+\end{equation}
+The optimal K-T condition of the problem \ref{} is 
+\begin{align}
+\frac{\partial L}{\partial q_t}=c_t-\lambda[\frac{\nabla f_t^2}{q_t^2}]-\mu_i=0
+\end{align}
+when $q_t=1$, we get $u_i\neq 0$, when $q_t\neq 1$, $\mu_i=0$, thus we have
+\begin{equation}\label{BC:q}
+q_t=\min\{1,\sqrt{\frac{\lambda}{c_t}}\nabla f_t\}
+\end{equation}
+According to our constraint condition
+\begin{equation}
+\sum_t \sqrt{\frac{c_t}{\lambda}}\nabla f_t\leq R
+\end{equation}
+\begin{align}
+\sqrt{\lambda}&\geq\frac{\sum_t \sqrt{c_t}\nabla f_t}{R}\\
+& =\frac{T}{R}(\frac{1}{T}\sum_t\sqrt{c_t}\nabla f_t)\\
+& =\frac{T}{R}\theta
+\end{align}
+where we use $\theta$ to denote the term $\frac{1}{T}\sum_t\sqrt{c_t}\nabla f_t$.
+Since \ref{BC:q} holds for $\forall c_t$, and $c_t$ is arbitrarily given.We may assume that the convoluted distribution function of the price mechanism is of the form 
+\begin{equation}
+F_t(c)=1-\sqrt{\frac{\lambda}{c}}\nabla f_t
+\end{equation}
+And the PDF is 
+\begin{equation}
+f(c)=\frac{1}{2}\sqrt{\lambda}{c^3}\nabla f_t
+\end{equation}
+\section{Analysis}
+Now we can make a relatively more precise estimate the budget $B$
+\begin{align}
+B&=\sum_t\int_{c_t}^Mcf(c)dc\\
+&=\sum_t\int_{c_t}^M\frac{1}{2}\sqrt{\frac{\lambda}{c}}\nabla f_t dc\\
+&=\sum_t\sqrt{\lambda}\nabla f_t(\sqrt){M}-\sqrt{c_t})\\
+&=\frac{T^2}{R}(\frac{1}{T}\sum_t\sqrt{c_t}\nabla f_t)(\sum_t \frac{1}{T}\nabla f_t(\sqrt{M}-\sqrt{c-t}))\\
+&=\frac{T^2}{R}\theta\varphi
+\end{align}
+where $\varphi=\sum_t\frac{1}{T}\nabla f_t(\sqrt{M}-\sqrt{c_t})$
+
+
+
+
+\end{document}

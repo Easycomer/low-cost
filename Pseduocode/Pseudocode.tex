@@ -1,0 +1,41 @@
+\documentclass{article}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\begin{document}
+\title{Pseudo code}
+\maketitle
+\section{Algorithm}
+\begin{algorithm}
+\label{alg:ogd}
+\caption{Online Gradient Descent}
+\begin{algorithmic}[1]
+\Require parameter $\eta$, loss function $f_1,...,f_T$
+\Ensure hypothesis $h_1,...,h_T$
+\State Initiate $h_1=0$
+\For{t=1,...,T-1}
+\State $h_{t+1}=h_{t}-\eta \nabla f_t(h_t)$
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}
+\label{alg:main}
+\caption{}
+\begin{algorithmic}[1]
+\Require Budget $B$,access to online gradient descent(OGD),sequence of RSS data $d_1,,,d_T$
+\Ensure the final hypothesis $\overline{h}$
+\For{t=1,...,T}
+\State acquire hypothesis $h_t$ from OGD
+\State post price $p_t$, drawn from $P(p_t>c)=F(c)$
+\If{the price get accepted}
+\State send $f_t(h_t)/(1-F(c_t))$ to OGD
+\Else
+\State send $0$ to OGD
+\EndIf 
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+\section{Notes}
+The form of $f_t$ is $f_t(h_t)=l(h_t,d_t)$ means that a certain kind of relation between data $d_t$ and hypothesis $h_t$, though we have not determine the specific form of $f_t$.
+\end{document}

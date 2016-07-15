@@ -1,13 +1,18 @@
 \documentclass{article}
+\usepackage{amsmath}
 \begin{document}
-\title{Solution V1.1}
+\title{Solution V2.0}
 \author{LST}
 \maketitle
 \section{problem definition}
-\[\min \sum_{i=1}^n \frac{\alpha_i}{1-F_i(c_i)}\]
+
+
+\[\min \sum_{i=1}^n \frac{{\nabla f_i}^2}{1-F_i(c_i)}\]
 \[s.t. \quad \sum_{i=1}^n\int_{c_i}^MxdF_i(x)\leq B\]
 where $\forall c_i,0\leq c_i\leq M$,and$F(0)=0,F(M)=1$
 \section{solution}
+
+
 First consider the unconstrained problem. If $\overline{y}$ is the local minimum of the functional $J(y)$
 if $y$ is the local niminum of $J(y)$, then it holds that $\forall \hat{y}$ in a function space $V$
 \[\delta J|_y(\hat{y}-\overline{y})\geq 0\]
@@ -16,7 +21,7 @@ where $,\delta J|_y(\hat{y}-\overline{y})$is the Gateaux deravative of J in the 
 We then consider the constraint problem. For the constraint optimization problem, we have that if $y$ is the extremal of the constraint problem, then it is also the extremal of the augmented cost functional(Lagarangian) $J(y)+\lambda C(y)$,where the $\lambda$ is the Lagarange Multiplier, and $C(y)$ is the constraint.
 
 We come back to our problem. We first give our function space $V=\{y|y(0)=0,y(M)=1\}$. And we denote our cost function as
-\[M(F_1,,,F_n)= \sum_{i=1}^n \frac{\alpha_i}{1-F_i(c_i)}.\]
+\[M(F_1,,,F_n)= \sum_{i=1}^n \frac{\nabla f_i^2}{1-F_i(c_i)}.\]
 Then the augmented cost function is derived as
 \[J(F_1,,,F_n,\lambda)=M(F_1,,,F_n)+\lambda( \sum_{i=1}^n\int_{c_i}^MxdF_i(x)-B) \]
 According to the calculation, we obtain that for $\forall \hat{F}\in V$
@@ -26,10 +31,28 @@ if $\overline{F}$ is the local minimum, then we have
 holds for every $\hat{F}\in V$.Noticing that
 \[\int_0^Mf_t(x)-f(x)dx=0\]
 We must have 
-\[-\frac{\alpha_t}{(1-F_t(c_t))^2}+\lambda x\geq 0\]
+\[-\frac{{\nabla f_t}^2}{(1-F_t(c_t))^2}+\lambda x\geq 0\]
 hold on every where on $[c_t,M]$
-thus we obtain that
-\[F_t(c)=1-\sqrt{\frac{\alpha_t}{\lambda c}}\quad c\in(0,M)\]
+We assume that
+\[-\frac{{\nabla f_t}^2}{(1-F_t(c_t))^2}+\lambda c_t= \beta \]
+where $\beta \geq 0$. thus we obtain that
+\[F_t(c)=1-\frac{\nabla f_t}{\sqrt{\lambda c-\beta}}\quad c\in(0,M)\]
+
+In order to obtain the best $f_t$ we can get, we need to find the K-T point of the following optmization problem
+
+\[\min \sum_{i=1}^n \nabla f_t \sqrt{\lambda c_t-\beta}\]
+\[s.t. \nabla f_t\bigg[\\
+\frac{M}{\sqrt{\lambda M-\beta}+\frac{2}{3\lambda^2}\big[(\lambda M+2\beta)\sqrt{\lambda M-\beta}-(\lambda c_t+2\beta)\sqrt{\lambda c_t-\beta}\big]}\bigg]\leq B\]
+\[\beta\geq 0\]
+\[\mu\geq 0\]
+We then write the Lagaranian of the problem
+\[
+L=\sum_t \nabla f_t \sqrt{\lambda c_t-\beta}-\mu\sum_t\Bigg[B-\nabla f_t\bigg[\\
+\frac{M}{\sqrt{\lambda M-\beta}+\frac{2}{3\lambda^2}\big[(\lambda M+2\beta)\sqrt{\lambda M-\beta}-(\lambda c_t+2\beta)\sqrt{\lambda c_t-\beta}\big]}\bigg]\Bigg]
+\]
+and get its gradient
+\[\frac{\partial L}{\partial \lambda}=\]
+\[\frac{\partial L}{\partial \beta}=\]
 Noticing that $F(x)$ is not continuous, according to Stieltjes Integral, we rewrite the constraint as following
 \[ \sum_{i=1}^n(\int_{c_i}^Mxf_i(x)dx+(1-F_i(M)M)\leq B\]
 According to the property of Lagarangian, we have

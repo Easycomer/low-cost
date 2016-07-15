@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.5.12)  12 JUL 2016 15:03
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.5.12)  15 JUL 2016 11:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -487,9 +487,6 @@ LaTeX Warning: Citation `postedpricing' on page 1 undefined on input line 68.
 LaTeX Warning: Citation `crowdsensing' on page 1 undefined on input line 68.
 
 
-LaTeX Warning: Citation `Lbs2' on page 1 undefined on input line 71.
-
-
 LaTeX Warning: Citation `Crowdloc14' on page 1 undefined on input line 71.
 
 
@@ -500,45 +497,25 @@ LaTeX Warning: Citation `Taskselection15' on page 1 undefined on input line 71.
 LaTeX Warning: Citation `recruit' on page 1 undefined on input line 71.
 
 
-LaTeX Warning: Citation `Pengdan15' on page 1 undefined on input line 71.
+LaTeX Warning: Citation `Lbs2' on page 1 undefined on input line 73.
 
 
-LaTeX Warning: Citation `noise' on page 1 undefined on input line 71.
+LaTeX Warning: Citation `noise' on page 1 undefined on input line 73.
 
 
-LaTeX Warning: Citation `incentive' on page 1 undefined on input line 71.
+LaTeX Warning: Citation `Pengdan15' on page 1 undefined on input line 73.
 
 
-LaTeX Warning: Citation `Incentive2' on page 1 undefined on input line 71.
-
-LaTeX Font Info:    Try loading font information for U+msa on input line 80.
-(c:/texlive/2015/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Try loading font information for U+msb on input line 80.
-
-(c:/texlive/2015/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-LaTeX Font Info:    Try loading font information for U+rsfs on input line 80.
-
-(c:/texlive/2015/texmf-dist/tex/latex/jknapltx/ursfs.fd
-File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
-)
-
-LaTeX Warning: Reference `' on page 1 undefined on input line 82.
+LaTeX Warning: Citation `incentive' on page 1 undefined on input line 73.
 
 
-LaTeX Warning: Reference `' on page 1 undefined on input line 82.
+LaTeX Warning: Citation `Incentive2' on page 1 undefined on input line 73.
 
 
-LaTeX Warning: Reference `' on page 1 undefined on input line 82.
+LaTeX Warning: Citation `Pengdan15' on page 1 undefined on input line 73.
 
 
-LaTeX Warning: Reference `' on page 1 undefined on input line 82.
-
-
-LaTeX Warning: Reference `' on page 1 undefined on input line 82.
+LaTeX Warning: Reference `weaksolution' on page 1 undefined on input line 82.
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -547,34 +524,34 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 ]
+LaTeX Font Info:    Try loading font information for U+msa on input line 100.
 
-LaTeX Warning: Reference `' on page 2 undefined on input line 106.
+(c:/texlive/2015/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 100.
 
-LaTeX Font Info:    Try loading font information for U+dsrom on input line 106.
+(c:/texlive/2015/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+LaTeX Font Info:    Try loading font information for U+rsfs on input line 100.
+
+(c:/texlive/2015/texmf-dist/tex/latex/jknapltx/ursfs.fd
+File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
+)
+
+LaTeX Warning: Reference `' on page 2 undefined on input line 107.
+
+LaTeX Font Info:    Try loading font information for U+dsrom on input line 107.
 
 (c:/texlive/2015/texmf-dist/tex/latex/doublestroke/udsrom.fd
 File: Udsrom.fd 1995/08/01 v0.1 Double stroke roman font definitions
-)
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-Missing character: There is no ï in font ptmr7t!
-Missing character: There is no ¿ in font ptmr7t!
-Missing character: There is no ½ in font ptmr7t!
-Missing character: There is no ï in font ptmr7t!
-Missing character: There is no ¿ in font ptmr7t!
-Missing character: There is no ½ in font ptmr7t!
-[2] <Figure1.png, id=21, 303.38344pt x 210.7875pt>
+) [2]
+<Figure1.png, id=21, 303.38344pt x 210.7875pt>
 File: Figure1.png Graphic file (type png)
  <use Figure1.png>
-Package pdftex.def Info: Figure1.png used on input line 137.
+Package pdftex.def Info: Figure1.png used on input line 138.
 (pdftex.def)             Requested size: 199.16928pt x 138.38364pt.
-Missing character: There is no ï in font ptmr7t!
-Missing character: There is no ¿ in font ptmr7t!
-Missing character: There is no ½ in font ptmr7t!
-Missing character: There is no ï in font ptmr7t!
-Missing character: There is no ¿ in font ptmr7t!
-Missing character: There is no ½ in font ptmr7t!
  [3 <./Figure1.png>]
 Missing character: There is no ï in font ptmr7t!
 Missing character: There is no ¿ in font ptmr7t!
@@ -585,26 +562,28 @@ Missing character: There is no ½ in font ptmr7t!
  <Figure4.pdf, id=36, 637.88312pt x 515.9275pt>
 File: Figure4.pdf Graphic file (type pdf)
  <use Figure4.pdf>
-Package pdftex.def Info: Figure4.pdf used on input line 187.
+Package pdftex.def Info: Figure4.pdf used on input line 188.
 (pdftex.def)             Requested size: 199.16928pt x 161.08524pt.
+ [4 <./Figure4.pdf>]
 
-[4 <./Figure4.pdf>]
-
-LaTeX Warning: Reference `OLServey' on page 5 undefined on input line 264.
+LaTeX Warning: Reference `OLServey' on page 5 undefined on input line 265.
 
 [5]
 
-LaTeX Warning: Reference `' on page 6 undefined on input line 306.
+LaTeX Warning: Reference `' on page 6 undefined on input line 311.
 
 
-LaTeX Warning: Reference `' on page 6 undefined on input line 309.
+LaTeX Warning: Reference `' on page 6 undefined on input line 350.
+
+[6]
+
+LaTeX Warning: Reference `' on page 7 undefined on input line 370.
 
 
-Underfull \hbox (badness 7869) in paragraph at lines 377--378
+Underfull \hbox (badness 7869) in paragraph at lines 433--434
 []\OT1/ptm/m/n/8 S.Hu, L.Su, H.Liu, H.Wang, and T.F.Abdelzaher, ``Smartroad:
  []
 
-[6]
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -616,21 +595,19 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[7
-
-] (./low-cost.aux)
+[7] (./low-cost.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 5338 strings out of 493089
- 77497 string characters out of 6138425
- 178802 words of memory out of 5000000
- 8708 multiletter control sequences out of 15000+600000
+ 5346 strings out of 493089
+ 77572 string characters out of 6138425
+ 179867 words of memory out of 5000000
+ 8716 multiletter control sequences out of 15000+600000
  43077 words of font info for 96 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 38i,22n,26p,1540b,248s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,22n,26p,1535b,234s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2015/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2015/texmf-dist/fo
 nts/type1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2015/texmf-dist/fonts/type1
@@ -651,7 +628,7 @@ onts/type1/public/amsfonts/symbols/msbm10.pfb><c:/texlive/2015/texmf-dist/fonts
 /type1/urw/times/utmb8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/u
 tmbi8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/tex
 live/2015/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on low-cost.pdf (7 pages, 344278 bytes).
+Output written on low-cost.pdf (7 pages, 350671 bytes).
 PDF statistics:
  141 PDF objects out of 1000 (max. 8388607)
  93 compressed objects within 1 object stream
