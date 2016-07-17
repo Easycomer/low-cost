@@ -72,21 +72,18 @@ The fingerprinting based method utilizes Wi-Fi APs widely existing in buildings 
 
 As the crowdsensing data are collected by unprofessional participants with non-dedicated equipment, the sensing data obtained are usually with considerable noise. The quality of the sensing data is the crux for evaluating contribution of the participants, which is the vitally important for effective utilizing rewards to incentivize participants to accomplish sensing tasks satisfactorily. However, how to evaluate the quality of the crowdsensing data is a challenging issue, because there is no ground truth for the collected data to be compared with. Efforts have been made to evaluate the crowdsensing data quality \cite{ Crowdloc14}, and the task allocation scheme \cite{ Taskselection15, recruit}. and incentive mechanisms considering the data quality are proposed. 
 
-While the efforts have been made for the evaluation of the quality of the data, the data procurement still remains not fully studied yet. Some quality-driven incentive mechanism\cite{Lbs2, noise,Pengdan15, incentive, Incentive2} were proposed, however, the state of the art method for crowdsensing data collection still focus on the incentive of workers. The economical problem is considered in \cite{Pengdan15}, however, the budget of the platform and is not included. Besides, all the work listed above do not consider the situation when data is coming in a sequential order and only 
-available in each round. How to acquire the high-quality data that is in a sequential order given the limited budget is still not fully investigated, which is the focus of this work. Our motivation is two-fold. On one hand, the existing work for sequential data procurement in the literature \cite{abernethy2015low}do not work well for the situation of indoor localization; on the other hand, we want to build a concrete measurement of RSS data specifically for the active learning mechanism. Our contributions are as following.
+While the efforts have been made for the evaluation of the quality of the data, the RSS data procurement still remains not fully studied yet. Some quality-driven incentive mechanism\cite{Lbs2, noise,Pengdan15, incentive, Incentive2} were proposed, however, the state of the art method for crowdsensing data collection still focus on the incentive of workers and the utility of the platform. The economical problem is considered in \cite{Pengdan15}, however, the budget constraint of the platform and is not included. Besides, all the work listed above do not consider the situation when data is coming in a sequential order and only available in each round. How to acquire the high-quality data that is in a sequential order given the limited budget still requires more thorough investigation, which is the focus of this work. Our motivation is two-fold. On one hand, the existing work for sequential data procurement in the literature \cite{abernethy2015low}do not work well for the situation of indoor localization; on the other hand, we want to build a concrete measurement of RSS data specifically for the active learning mechanism. Our contributions are as following.
 
-First, we design an effective way to measure the quality of RSS data. [To be completed by WenXin] With such a measurenent, we successfully convert the problem into the basic framework of how to acquire the RSS data of best quality with the lowest costs.
+First, we design an effective way to measure the quality of RSS data through the analysis of the probability of localization error. With such a measurenent, we are able to know what kind of data we should procure. And we thus convert the problem into the basic framework of how to acquire the RSS data of best quality with the lowest costs.
 
-Second, we produce a mechanism for RSS data procurement under a relatively nicer assumption that the costs of data are drawn according to a known distribution. Based on this assumption, the performance of our mechanism is dependent on both the quality of prior knowledge about the distribution of the costs and the regularity of the data. When the costs of data is relevant to a distribution that we know well the mechanism can perform well. 
-
-Third, we generalize the mechanism to a more general case where the incoming cost of data is adversarially given. \emph{Using the technique of varitional calculus, we give an upper regret bound.](do not know whether this should remain} The mechanism is robust in most indoor-localization situations, even the prior knowledge of the costs is not well understood and the noise in the crowdsensing data is rather arbitrary. And we further provide a most economical data procure mechanism when the accuracy of RSS data is required.
+Second, we generalize the mechanism to a more general case where the incoming cost of data is adversarially given. \emph{Using the technique of varitional calculus, we give an upper regret bound.](do not know whether this should remain} The mechanism is robust in most indoor-localization situations, even the prior knowledge of the costs is not well understood and the noise in the crowdsensing data is rather arbitrary. And we further provide a most economical data procure mechanism when the accuracy of RSS data is required.
 
 The remaining of the paper is organized as following. The system structure and settings are given in section \ref{sysmodel}. The measurement  RSS data quality is presented in Section \ref{loss}. Section\ref{probdef}  gives the abstract definition for the online data procurement mechanism. Section \ref{weaksolution} describes the mechanism under the simple assumption that the costs data are drawn in a distribution. Section \ref{mainsolution} presents a generalized and more robust mechanism for the RSS data procurement. Section \ref{exp&sim} gives our simulations and experiments for the mechanism we given before.
 
 
 
 \section{Related Work \label{sectionrelatedwork}}
-During the inception of indoor localization research with WLAN as the background, the technique utilized to deduce a user's location is called 'nearest neighbour(s) in signal space'(NNSS) \cite{radar}, whose marrow is calculating the Euclidean distance between RSSes stored in the database and RSSes measured during localizing. NNSS outputs the location minimizing that distance as the ultimate estimation of the user’s location. However, NNSS still dangles the possibility of accuracy enhancement in that it fails to realize the joint location estimation from multiple APs \cite{castro01}.
+During the inception of indoor localization research with WLAN as the background, NNSS outputs the location minimizing that distance as the ultimate estimation of the user’s location. However, NNSS still dangles the possibility of accuracy enhancement in that it fails to realize the joint location estimation from multiple APs \cite{castro01}.
 
 In order to take advantage of these multiple APs, Chintalapudi \emph{et al.} bring up an algorithm entitled as EZ localization, whose main contribution occurs in estimating mobile devices without any pre-deployment support of multiple APs \cite{Chintalapudi10}. EZ will learn from those acquired fingerprints, which reflect the value of mean and standard deviation of the RSSes corresponding to different APs, during the collection phase. The key point of EZ is that it is erected on the fact that the physics of wireless propagation constrain the fingerprints reported to the server, and it models these constraints and couples them with a genetic algorithm to get the final solution.
 
@@ -289,8 +286,8 @@ R(T)=\sum_{t=1}^Tf_t(h_t)-\min_{h^*\in H}\sum_{t=1}^Tf_t(h^*_t)
 where $h^*$ is the optimal choice, causing the least loss in our solution space $H$. The regret function reflexes how the data deviate from the desired value, the real mean and variance of RSS. We also make some assumptions for this problem
 \begin{enumerate}
 \item the agents have nothing to do with the costs
-\item 
-\item 
+\item the 
+\item the 
 \end{enumerate}
 
 
@@ -300,7 +297,7 @@ We here use the classical Online Gradient Descent(OGD) algorithm to work as the 
 \begin{equation}
 h_t=h_{t-1}-\eta \nabla f_t(h_{t-1})
 \end{equation}.
-The algorithm choose the smallest hypothesis in $H$ such that the sum of the loss function plus a regularizer $R$ get its infimum
+
 
 
 \subsection{Importance Weighting technique}
@@ -316,17 +313,17 @@ In tradational online learning problem, all the data will be used to produce the
 
 
 \subsection{Problem definition}
-We consider that the data collected through crowdsensing coming in a sequence of $d_1,,,d_T$, with each of them contains a cost $c_1,,,c_T$. We should design a mechanism that can choose whether we should buy the data or not. However, we have no means to know either the quality of data is good enough for localization or there will be a better one coming in the sequence. Under the framework of online machine learning, we formally define our mechanism as following
+We consider that the data collected through crowdsensing coming in a sequence of $d_1,,,d_T$, with each of them contains a cost $c_1,,,c_T$. We should design a pricing mechanism that can choose how much we should pay for the data. However, we have no means to know either the quality of data is good enough for localization or there will be a better one coming in the sequence. Under the framework of online machine learning, we formally define our RSS data Procure Mechanism ($RPM$) is defined as following.
 \begin{definition}{}\label{def:1}
-The RSS data Procure Mechanism ($RPM$) is defined as following. Given a sequence of data ${d_1,...,d_T}$ coming in time $1,,,,,T$ with each data possessing a posted price $c_t$, $c_t\in [0,M]$. 
+Given a sequence of data ${d_1,...,d_T}$ coming in time $1,,,,,T$ with each data possessing a posted price $c_t$, $c_t\in [0,M]$. 
 \begin{enumerate}
 \item The RPM post a hypthesis $h_t$ from OGD
-\item The RPM post a price $p_t$ according to a probablity distribution function $g_t(p_t)$.
+\item The RPM post a price $p_t$ according to a distribution $G_t$ over $[0,M]$.
 \item If the $p_t>c_t$ agent accepted the price, the RPM send the loss function $f(h_t)/q_t$ back to the OGD and pay for the posted price $p_t$. If $p_t<c_t$the agent rejected the price, the mechanism send a null data to the OGD . 
 \end{enumerate}
-The mechanism outputs a hypothesis $\overline{h}\in H$
+The mechanism outputs a final hypothesis $\overline{h}\in H$
 \end{definition}
-And clearly, our kernel problem is to find the best distribution used for the mechanism to post its price 
+And clearly, our kernel problem is to find the best distribution $G_t$ used for the mechanism to post its price 
 \subsection{online batch to conversion}
 The meachanism and online learning algorithm produces a sequence of hypothesis $h_1,,,h_T$. The main goal of our algorithm is to get the best hypothesis $\overline{h}$, the mean value and variance of RSS, from the sequence. One simple aproach is to average every hypothesis $h_t$ acquired in each time $t$.
 \begin{equation}
@@ -335,9 +332,9 @@ The meachanism and online learning algorithm produces a sequence of hypothesis $
 It has been proved that ...,
 
 \section{The main setting: regret minimization senario}\label{mainsolution}
-In this senario, the mechanism has a fixed budget. The main purpose of the mechanism is to get a high accuracy of localization informaiton, which is consistent with our definition of loss function and regret. 
+In this senario, the mechanism has a fixed budget. The target of the mechanism is that in each round $t$, the  produce the minimum regret defined in \ref{def:reg} . In this section, we will give the exact form of the distribution $G_t$ and the analysis of the regret bound according to this distribution. 
 \subsection{Estimate the upper bound of regret}
-We will first find the upper bound of the regret produced by RPM defined in \ref{def:}. In normal case, the regret bound of OGD is 
+We will find the upper bound of the regret defined in (\ref{def:reg}) produced by RPM. In normal case, the regret bound of OGD is 
 \begin{equation}
 \frac{||h||^2}{2\eta}+\eta \sum_{t=1}^T\nabla f_t(h_t)^2
 \end{equation}
@@ -374,7 +371,7 @@ We first give our function space $V=\{y|y(0)=0,y(M)=1\}$. And we denote our cost
 \[M(F_1,,,F_n)= \sum_{i=1}^n \frac{\alpha_i}{1-F_i(c_i)}.\]
 Then the augmented Lagrange function is derived as
 \[J(F_1,,,F_n,\lambda)=M(F_1,,,F_n)+\lambda( \sum_{i=1}^n\int_{c_i}^MxdF_i(x)-B) \]
-According to the calculation, we obtain that for $\forall \hat{F}\in V$
+According to the Gateaux Deravative, we obtain that for $\forall \hat{F}\in V$
 \[\delta J|_{F_t}(\hat{F_t}-F_t)=\int_{c_t}^M(-\frac{\alpha_t}{(1-F_t(c_t))^2}+\lambda x)(\hat{f}(x)-f(x))dx\]
 if $\overline{F}$ is the local minimum, then we have
 \[\delta J(\hat{F_t}-\overline{F_t})\geq 0\]

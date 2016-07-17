@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.5.12)  17 JUL 2016 10:12
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.5.12)  17 JUL 2016 14:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -457,143 +457,222 @@ LaTeX Warning: No \author given.
 LaTeX Warning: No \author given.
 
 
-LaTeX Warning: Citation `mobicom04' on page 1 undefined on input line 66.
+LaTeX Warning: Citation `mobicom04' on page 1 undefined on input line 68.
 
 
-LaTeX Warning: Citation `horus' on page 1 undefined on input line 66.
+LaTeX Warning: Citation `horus' on page 1 undefined on input line 68.
 
 
-LaTeX Warning: Citation `Chenshu14' on page 1 undefined on input line 68.
+LaTeX Warning: Citation `Chenshu14' on page 1 undefined on input line 70.
 
 
-LaTeX Warning: Citation `luo2014piloc' on page 1 undefined on input line 68.
+LaTeX Warning: Citation `luo2014piloc' on page 1 undefined on input line 70.
 
 
-LaTeX Warning: Citation `shen2013walkie' on page 1 undefined on input line 68.
+LaTeX Warning: Citation `shen2013walkie' on page 1 undefined on input line 70.
 
 
-LaTeX Warning: Citation `ez10' on page 1 undefined on input line 68.
+LaTeX Warning: Citation `ez10' on page 1 undefined on input line 70.
 
 
-LaTeX Warning: Citation `Chintalapudi10' on page 1 undefined on input line 68.
+LaTeX Warning: Citation `Chintalapudi10' on page 1 undefined on input line 70.
 
 
-LaTeX Warning: Citation `crowdsensing' on page 1 undefined on input line 68.
+LaTeX Warning: Citation `crowdsensing' on page 1 undefined on input line 70.
 
 
-LaTeX Warning: Citation `postedpricing' on page 1 undefined on input line 68.
+LaTeX Warning: Citation `postedpricing' on page 1 undefined on input line 70.
 
 
-LaTeX Warning: Citation `crowdsensing' on page 1 undefined on input line 68.
+LaTeX Warning: Citation `crowdsensing' on page 1 undefined on input line 70.
 
 
-LaTeX Warning: Citation `Crowdloc14' on page 1 undefined on input line 71.
+LaTeX Warning: Citation `Crowdloc14' on page 1 undefined on input line 73.
 
 
-LaTeX Warning: Citation `Taskselection15' on page 1 undefined on input line 71.
+LaTeX Warning: Citation `Taskselection15' on page 1 undefined on input line 73.
 
 
 
-LaTeX Warning: Citation `recruit' on page 1 undefined on input line 71.
+LaTeX Warning: Citation `recruit' on page 1 undefined on input line 73.
 
 
-LaTeX Warning: Citation `Lbs2' on page 1 undefined on input line 73.
+LaTeX Warning: Citation `Lbs2' on page 1 undefined on input line 75.
 
 
-LaTeX Warning: Citation `noise' on page 1 undefined on input line 73.
+LaTeX Warning: Citation `noise' on page 1 undefined on input line 75.
 
 
-LaTeX Warning: Citation `Pengdan15' on page 1 undefined on input line 73.
+LaTeX Warning: Citation `Pengdan15' on page 1 undefined on input line 75.
 
 
-LaTeX Warning: Citation `incentive' on page 1 undefined on input line 73.
+LaTeX Warning: Citation `incentive' on page 1 undefined on input line 75.
 
 
-LaTeX Warning: Citation `Incentive2' on page 1 undefined on input line 73.
+LaTeX Warning: Citation `Incentive2' on page 1 undefined on input line 75.
 
 
-LaTeX Warning: Citation `Pengdan15' on page 1 undefined on input line 73.
+LaTeX Warning: Citation `Pengdan15' on page 1 undefined on input line 75.
 
 
-LaTeX Warning: Reference `weaksolution' on page 1 undefined on input line 82.
+LaTeX Warning: Reference `weaksolution' on page 1 undefined on input line 81.
 
+Missing character: There is no â in font ptmr7t!
+Missing character: There is no € in font ptmr7t!
+Missing character: There is no ™ in font ptmr7t!
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+LaTeX Warning: Citation `castro01' on page 1 undefined on input line 86.
 
- [1{c:/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
+[1{c:/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 
 ]
-LaTeX Font Info:    Try loading font information for U+msa on input line 100.
 
-(c:/texlive/2015/texmf-dist/tex/latex/amsfonts/umsa.fd
+LaTeX Warning: Citation `Chintalapudi10' on page 2 undefined on input line 88.
+
+
+LaTeX Warning: Citation `Yang12' on page 2 undefined on input line 90.
+
+
+LaTeX Warning: Citation `Chenshu14' on page 2 undefined on input line 90.
+
+
+LaTeX Warning: Citation `Yang12' on page 2 undefined on input line 90.
+
+Missing character: There is no â in font ptmr7t!
+Missing character: There is no € in font ptmr7t!
+Missing character: There is no ™ in font ptmr7t!
+
+LaTeX Warning: Citation `Rai12' on page 2 undefined on input line 92.
+
+
+LaTeX Warning: Citation `walkie' on page 2 undefined on input line 92.
+
+
+LaTeX Warning: Citation `piloc' on page 2 undefined on input line 92.
+
+
+LaTeX Warning: Citation `Wen2015Quality' on page 2 undefined on input line 92.
+
+
+LaTeX Warning: Citation `zhang2015incentivize' on page 2 undefined on input lin
+e 94.
+
+Missing character: There is no â in font ptmr7t!
+Missing character: There is no € in font ptmr7t!
+Missing character: There is no ™ in font ptmr7t!
+
+LaTeX Warning: Citation `Jin2015Quality' on page 2 undefined on input line 101.
+
+
+
+LaTeX Warning: Citation `Jin2015Quality' on page 2 undefined on input line 101.
+
+
+
+LaTeX Warning: Citation `Peng2015Pay' on page 2 undefined on input line 104.
+
+
+LaTeX Warning: Citation `Tham2013Quality' on page 2 undefined on input line 107
+.
+
+
+LaTeX Warning: Citation `Kawajiri2014Steered' on page 2 undefined on input line
+ 111.
+
+
+LaTeX Warning: Citation `Kawajiri2014Steered' on page 2 undefined on input line
+ 113.
+
+
+LaTeX Warning: Citation `Wen2015Quality' on page 2 undefined on input line 113.
+
+
+
+LaTeX Warning: Citation `Kawajiri2014Steered' on page 2 undefined on input line
+ 116.
+
+[2]
+Missing character: There is no â in font ptmr7t!
+Missing character: There is no € in font ptmr7t!
+Missing character: There is no ™ in font ptmr7t!
+LaTeX Font Info:    Try loading font information for U+msa on input line 120.
+ (c:/texlive/2015/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 100.
+LaTeX Font Info:    Try loading font information for U+msb on input line 120.
 
 (c:/texlive/2015/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Try loading font information for U+rsfs on input line 100.
+LaTeX Font Info:    Try loading font information for U+rsfs on input line 120.
 
 (c:/texlive/2015/texmf-dist/tex/latex/jknapltx/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 )
+Missing character: There is no â in font ptmr7t!
+Missing character: There is no € in font ptmr7t!
+Missing character: There is no ™ in font ptmr7t!
+ [3]
 
-LaTeX Warning: Reference `' on page 2 undefined on input line 107.
+LaTeX Warning: Reference `' on page 4 undefined on input line 138.
 
-LaTeX Font Info:    Try loading font information for U+dsrom on input line 107.
+LaTeX Font Info:    Try loading font information for U+dsrom on input line 138.
 
 (c:/texlive/2015/texmf-dist/tex/latex/doublestroke/udsrom.fd
 File: Udsrom.fd 1995/08/01 v0.1 Double stroke roman font definitions
-) [2]
-<Figure1.png, id=21, 303.38344pt x 210.7875pt>
+)
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<Figure1.png, id=20, 303.38344pt x 210.7875pt>
 File: Figure1.png Graphic file (type png)
  <use Figure1.png>
-Package pdftex.def Info: Figure1.png used on input line 138.
+Package pdftex.def Info: Figure1.png used on input line 169.
 (pdftex.def)             Requested size: 199.16928pt x 138.38364pt.
- [3 <./Figure1.png>]
+ [4 <./Figure1.png>]
 Missing character: There is no ï in font ptmr7t!
 Missing character: There is no ¿ in font ptmr7t!
 Missing character: There is no ½ in font ptmr7t!
 Missing character: There is no ï in font ptmr7t!
 Missing character: There is no ¿ in font ptmr7t!
 Missing character: There is no ½ in font ptmr7t!
- <Figure4.pdf, id=36, 637.88312pt x 515.9275pt>
+ <Figure4.pdf, id=37, 637.88312pt x 515.9275pt>
 File: Figure4.pdf Graphic file (type pdf)
  <use Figure4.pdf>
-Package pdftex.def Info: Figure4.pdf used on input line 188.
+Package pdftex.def Info: Figure4.pdf used on input line 219.
 (pdftex.def)             Requested size: 199.16928pt x 161.08524pt.
- [4 <./Figure4.pdf>] [5]
+ [5 <./Figure4.pdf>] [6]
 
-LaTeX Warning: Reference `def:' on page 6 undefined on input line 306.
-
-
-LaTeX Warning: Reference `' on page 6 undefined on input line 330.
+LaTeX Warning: Reference `def:' on page 7 undefined on input line 337.
 
 
-LaTeX Warning: Reference `' on page 6 undefined on input line 380.
+LaTeX Warning: Reference `' on page 7 undefined on input line 361.
+
+[7]
+
+LaTeX Warning: Reference `' on page 8 undefined on input line 411.
 
 
-LaTeX Warning: Reference `' on page 6 undefined on input line 381.
-
-[6]
-
-LaTeX Warning: Reference `' on page 7 undefined on input line 391.
+LaTeX Warning: Reference `' on page 8 undefined on input line 412.
 
 
-LaTeX Warning: Reference `' on page 7 undefined on input line 425.
+LaTeX Warning: Reference `' on page 8 undefined on input line 422.
 
 
-LaTeX Warning: Reference `' on page 7 undefined on input line 461.
+LaTeX Warning: Reference `' on page 8 undefined on input line 456.
 
-<exp-loc.png, id=67, 792.16339pt x 426.6035pt>
+[8]
+
+LaTeX Warning: Reference `' on page 9 undefined on input line 492.
+
+<exp-loc.png, id=74, 792.16339pt x 426.6035pt>
 File: exp-loc.png Graphic file (type png)
  <use exp-loc.png>
-Package pdftex.def Info: exp-loc.png used on input line 464.
+Package pdftex.def Info: exp-loc.png used on input line 495.
 (pdftex.def)             Requested size: 230.0pt x 123.86156pt.
- [7]
-Underfull \hbox (badness 7869) in paragraph at lines 493--494
+
+Underfull \hbox (badness 7869) in paragraph at lines 524--525
 []\OT1/ptm/m/n/8 S.Hu, L.Su, H.Liu, H.Wang, and T.F.Abdelzaher, ``Smartroad:
  []
 
@@ -608,21 +687,19 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[8
-
- <./exp-loc.png>] (./low-cost.aux)
+[9 <./exp-loc.png>] (./low-cost.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 5355 strings out of 493089
- 77688 string characters out of 6138425
- 179900 words of memory out of 5000000
- 8724 multiletter control sequences out of 15000+600000
+ 5366 strings out of 493089
+ 77833 string characters out of 6138425
+ 178900 words of memory out of 5000000
+ 8735 multiletter control sequences out of 15000+600000
  43077 words of font info for 96 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 38i,22n,26p,1535b,248s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,22n,26p,1535b,234s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2015/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2015/texmf-dist/fo
 nts/type1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2015/texmf-dist/fonts/type1
@@ -643,10 +720,10 @@ onts/type1/public/amsfonts/symbols/msbm10.pfb><c:/texlive/2015/texmf-dist/fonts
 /type1/urw/times/utmb8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/u
 tmbi8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/tex
 live/2015/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on low-cost.pdf (8 pages, 1026500 bytes).
+Output written on low-cost.pdf (9 pages, 1035438 bytes).
 PDF statistics:
- 146 PDF objects out of 1000 (max. 8388607)
- 95 compressed objects within 1 object stream
+ 149 PDF objects out of 1000 (max. 8388607)
+ 97 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
 
