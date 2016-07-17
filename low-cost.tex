@@ -45,12 +45,12 @@
 \title{Quality Evaluation of Crowdsensed Fingerprints for Indoor Localization}
 
 %
-%\author{\IEEEauthorblockN{Mei Wang$^1$, Xiaohua Tian$^{2,3}$, Xinbing Wang$^{1,3}$}
+%\author{\IEEEauthorblockN{Shitao Li$^1$,Xinyu Wu$^2$,Yucheng Yang$^2$,Wenxin Li$^2$, Xiaohua Tian$^{2,3}$, Xinbing Wang$^{1,3}$}
 %\IEEEauthorblockA{
-%1. School of Electronic, Info. \& Electrical Engineering, Shanghai Jiao Tong University, China\\
+%1. Department of Mathematics, Shanghai Jiao Tong University, China\\
 %2. Dept. of Electronic Engineering, Shanghai Jiao Tong University, China\\
 %3. National Mobile Communications Research Laboratory, Southeast University, China}
-% \{mary1994, xtian, xwang8\}@sjtu.edu.cn}
+% \{list12356, xtian, xwang8\}@sjtu.edu.cn}
 %
 
 \maketitle
@@ -70,7 +70,7 @@ The fingerprinting based method utilizes Wi-Fi APs widely existing in buildings 
 
 As the crowdsensing data are collected by unprofessional participants with non-dedicated equipment, the sensing data obtained are usually with considerable noise. The quality of the sensing data is the crux for evaluating contribution of the participants, which is the vitally important for effective utilizing rewards to incentivize participants to accomplish sensing tasks satisfactorily. However, how to evaluate the quality of the crowdsensing data is a challenging issue, because there is no ground truth for the collected data to be compared with. Efforts have been made to evaluate the crowdsensing data quality \cite{ Crowdloc14}, and the task allocation scheme \cite{ Taskselection15, recruit}. and incentive mechanisms considering the data quality are proposed. 
 
-While the efforts have been made for quality-driven incentive mechanism\cite{Lbs2, noise,Pengdan15, incentive, Incentive2}, the state of the art method for crowdsensing data collection still focus on the incentive of workers. The economical problem is considered in \cite{Pengdan15}, however, the budget of the platform and is not included. Besides, all the work listed above do not consider the situation when data is coming in a sequential order and only 
+While the efforts have been made for the evaluation of the quality of the data, the data procurement still remains not fully studied yet. Some quality-driven incentive mechanism\cite{Lbs2, noise,Pengdan15, incentive, Incentive2} were proposed, however, the state of the art method for crowdsensing data collection still focus on the incentive of workers. The economical problem is considered in \cite{Pengdan15}, however, the budget of the platform and is not included. Besides, all the work listed above do not consider the situation when data is coming in a sequential order and only 
 available in each round. How to acquire the high-quality data that is in a sequential order given the limited budget is still not fully investigated, which is the focus of this work. Our motivation is two-fold. On one hand, the existing work for sequential data procurement in the literature \cite{abernethy2015low}do not work well for the situation of indoor localization; on the other hand, we want to build a concrete measurement of RSS data specifically for the active learning mechanism. Our contributions are as following.
 
 First, we design an effective way to measure the quality of RSS data. [To be completed by WenXin] With such a measurenent, we successfully convert the problem into the basic framework of how to acquire the RSS data of best quality with the lowest costs.
@@ -241,7 +241,7 @@ P(err) &= \iint_A {{f_A}}(Q)P(err|X = {X_0})dxdy\\
 \end{align}
 
 \section{Low-cost data purchasing problem}\label{probdef}
-In this section, we will abstractly define the problem of the designing of the effective mechanism to acquire the RSS information collected by the crowds. 
+In this section, we will give some preliminary about the task of our mechanism and prevailing principle used in statistical machine learning. We abstractly define the problem of the designing of the effective mechanism to acquire the RSS information collected by the crowds. 
 
 \subsection{Preliminaries}
 We first give the concept of loss and regret. The loss function that reflects the data quality is defined in the space $H\times Z\to R$, where $H$ is the hypothesis class and $Z$ is the space of the objects. We expect the loss function to get its minimum value when the data is exactly the ideal data. In our setting, the hypothesis $h$ is the mean value and variance of RSS fingerprinting data, and the hypothesis class $H$ is our expected internal of mean value and  variance. 
@@ -249,42 +249,46 @@ We first give the concept of loss and regret. The loss function that reflects th
 f_t(h_t)=
 \end{equation}
  After we acquire the loss function, we give the concept of the regret function.
-\begin{equation}
+\begin{equation}\label{def:reg}
 R(T)=\sum_{t=1}^Tf_t(h_t)-\min_{h^*\in H}\sum_{t=1}^Tf_t(h^*_t)
 \end{equation}
 where $h^*$ is the optimal choice, causing the least loss in our solution space $H$. The regret function reflexes how the data deviate from the desired value, the real mean and variance of RSS. We also make some assumptions for this problem
 \begin{enumerate}
-\item the agents may lie about the cost
+\item the agents have nothing to do with the costs
 \item 
-\item the cost of each data  lies in an internal between  0 and $M$
+\item 
 \end{enumerate}
 
 
-\subsection{Online Learning Algorithms}
+\subsection{Online Gradient Descent}
 Online learning is a widely used learning paradign. The goal of online learning is to produce the best hypothesis when data is in sequential order
-We here use the classical Online Gradient Descent(OGD) algorithm to work as the Online Algorithms. It has been proved that the OGD has an upper bound of regret of $O(\sqrt{T})$, which ensures that the average regret tends to zero when $T$ goes to infinite. There are also many kinds of other Online Algorithms which can be found in \ref{OLServey}, etc. The OGD is described as following. In each time $t$, the algorithm choose the smallest hypothesis in $H$ such that the sum of the loss function plus a regularizer $R$ get its infimum
+We here use the classical Online Gradient Descent(OGD) algorithm to work as the Online Algorithms. It has been proved that the OGD has an upper bound of regret of $O(\sqrt{T})$, which ensures that the average regret tends to zero when $T$ goes to infinite. There are also many kinds of other Online Algorithms which can be found in ref{OLServey}, etc. The OGD is described as following. In each time $t$, we obtain a $h_t$ according to
 \begin{equation}
-h_t=arg\min_{h\in H}\sum_{i=1}^{t-1}f_i(w)+R(w)
+h_t=h_{t-1}-\eta \nabla f_t(h_{t-1})
 \end{equation}.
-
+The algorithm choose the smallest hypothesis in $H$ such that the sum of the loss function plus a regularizer $R$ get its infimum
 
 
 \subsection{Importance Weighting technique}
 
-In tradational online learning problem, all the data will be used to produce the total regret. In our low-cost purchasing problem, the mechanism do not get access to data and obtain a loss in each time $t$.  the estimation of loss is $E(\sum_{t=0}^T\delta_t f_t)=\sum_{t=0}^T q_t f_t$, where $\delta_t$ is the function showing whether the data is procured. However, the definition of regret still includes all the loss, whether it has been used or not.  In order to get an unbiased estimator, we define
-\begin{numcases}{\hat{f_t}(h)=}
-  \frac{f_t(h_t)}{q_t} & if the is  \\
+In tradational online learning problem, all the data will be used to produce the total regret. In our low-cost purchasing problem, the mechanism do not get access to data and obtain a loss in each time $t$.  the estimation of loss is $E(\sum_{t=0}^T\delta_t f_t)=\sum_{t=0}^T q_t f_t$, where $\delta_t$ is the function showing whether the data is procured. However, the definition of regret in [\ref{def:reg}] still includes all the loss in each time $t$, whether it has been used or not.  In order to get an unbiased estimator of the regeret, we define
+\begin{equation}
+\hat{f_t}(h)=\begin{cases}{}
+  \frac{f_t(h_t)}{q_t} & data\quad access\quad to\quad RPM  \\
   0 & else 
-\end{numcases}
+\end{cases}
+\end{equation}
 .
+
+
 \subsection{Problem definition}
 We consider that the data collected through crowdsensing coming in a sequence of $d_1,,,d_T$, with each of them contains a cost $c_1,,,c_T$. We should design a mechanism that can choose whether we should buy the data or not. However, we have no means to know either the quality of data is good enough for localization or there will be a better one coming in the sequence. Under the framework of online machine learning, we formally define our mechanism as following
 \begin{definition}{}\label{def:1}
-Given a sequence of data ${d_1,,,d_T}$ coming in time $1,,,,,T$ with each data possessing a posted price $c_t$, $c_t\in [0,M]$. 
+The RSS data Procure Mechanism ($RPM$) is defined as following. Given a sequence of data ${d_1,...,d_T}$ coming in time $1,,,,,T$ with each data possessing a posted price $c_t$, $c_t\in [0,M]$. 
 \begin{enumerate}
-\item The mecahnism post a hypthesis $h_t$ from OLA
-\item The mechanism post a price $p_t$ according to a probablity distribution function $g_t(p_t)$.
-\item If the $p_t>c_t$ agent accepted the price, the mechanism send the loss function $f(h_t)/q_t$ back to the OLA and pay for the posted price $p_t$. If $p_t<c_t$the agent rejected the price, the mechanism send a null data to the OLA . 
+\item The RPM post a hypthesis $h_t$ from OGD
+\item The RPM post a price $p_t$ according to a probablity distribution function $g_t(p_t)$.
+\item If the $p_t>c_t$ agent accepted the price, the RPM send the loss function $f(h_t)/q_t$ back to the OGD and pay for the posted price $p_t$. If $p_t<c_t$the agent rejected the price, the mechanism send a null data to the OGD . 
 \end{enumerate}
 The mechanism outputs a hypothesis $\overline{h}\in H$
 \end{definition}
@@ -294,34 +298,47 @@ The meachanism and online learning algorithm produces a sequence of hypothesis $
 \begin{equation}
 \overline{h}=\sum_{t=1}^n h_t
 \end{equation}
-It has been proved that 
+It has been proved that ...,
 
 \section{The main setting: regret minimization senario}\label{mainsolution}
 In this senario, the mechanism has a fixed budget. The main purpose of the mechanism is to get a high accuracy of localization informaiton, which is consistent with our definition of loss function and regret. 
 \subsection{Estimate the upper bound of regret}
-We will first find the upper bound of the regret. In normal case, the regret bound of OGD is 
-\[\frac{||h||^2}{2\eta}+\eta \sum_{t=1}^T\nabla f_t(h_t)^2\]
-, which is a well known result. Under the importance weighting framework, we give the regret bound in the following lemma
-\begin{Lemma}{}
-The regret bound produced by the mechanism in \ref{def:1} using the OLA of OGD is bounded by
+We will first find the upper bound of the regret produced by RPM defined in \ref{def:}. In normal case, the regret bound of OGD is 
 \begin{equation}
-R(h)=\frac{||h||^2}{2\eta}+\eta E(\sum_{t=1}^T\frac{\nabla f_t(h_t)^2}{q_t})
+\frac{||h||^2}{2\eta}+\eta \sum_{t=1}^T\nabla f_t(h_t)^2
+\end{equation}
+, which is a well known result. Under the importance weighting framework, we give the regret bound in the following lemma
+\begin{Lemma}\label{lemma:reg}
+The regret bound produced by RPM in \ref{def:1} is bounded by
+\begin{equation}
+R(h)\leq \frac{||h||^2}{2\eta}+\eta E(\sum_{t=1}^T\frac{\nabla f_t(h_t)^2}{q_t})
 \end{equation}
 \end{Lemma}
-The $\Delta_{h_t,f_t}^2$ denotes the duality norm of $||\nabla f_t||$. The \ref{} is quite easy to be proved under our setting that the loss function $f_t$ is of strong convexity.
+. The \ref{lemma:reg} is quite easy to be proved under our setting that the loss function $f_t$ is of strong convexity.
 
 \subsection{Derivation of the Regeret Minimization Problem}
 
-First consider the unconstrained problem. If $\overline{y}$ is the local minimum of the functional $J(y)$
-if $y$ is the local niminum of $J(y)$, then it holds that $\forall \hat{y}$ in a function space $V$
-\[\delta J|_y(\hat{y}-\overline{y})\geq 0\]
-where $,\delta J|_y(\hat{y}-\overline{y})$is the Gateaux deravative of J in the direction of $\hat{y}-\overline{y}$. 
-
-We then consider the constraint problem. For the constraint optimization problem, we have that if $y$ is the extremal of the constraint problem, then it is also the extremal of the augmented cost functional(Lagarangian) $J(y)+\lambda C(y)$,where the $\lambda$ is the Lagarange Multiplier, and $C(y)$ is the constraint.
-
-We come back to our problem. We first give our function space $V=\{y|y(0)=0,y(M)=1\}$. And we denote our cost function as
+In each time $t$, the RPM need to post a price $p$ according to a distribution $g$ in order to get a minimum regret, we thus reduce the problem of designing a mechanism into an optimization problem
+\begin{equation}
+\begin{aligned}
+&\min \sum_{i=1}^n \frac{{\nabla f_i}^2}{1-F_i(c_i)}\\
+s.t. &\quad \sum_{i=1}^n\int_{c_i}^MxdF_i(x)\leq B
+\end{aligned}
+\end{equation}
+where $\forall c_i,0\leq c_i\leq M$,and$F(0)=0,F(M)=1$
+\begin{theorem}
+The optimal solution of the optimization problem [\ref{}] is in the form 
+\begin{equation}
+F_t(c)=\begin{cases}
+  1-\frac{\nabla f_t}{\sqrt{\lambda c-\beta}} &c\in(\frac{\nabla f_t^2+\beta}{\lambda},M]  \\
+  0 & else 
+\end{cases}
+\end{equation}
+\end{theorem}
+\begin{IEEEproof}
+We first give our function space $V=\{y|y(0)=0,y(M)=1\}$. And we denote our cost function as
 \[M(F_1,,,F_n)= \sum_{i=1}^n \frac{\alpha_i}{1-F_i(c_i)}.\]
-Then the augmented cost function is derived as
+Then the augmented Lagrange function is derived as
 \[J(F_1,,,F_n,\lambda)=M(F_1,,,F_n)+\lambda( \sum_{i=1}^n\int_{c_i}^MxdF_i(x)-B) \]
 According to the calculation, we obtain that for $\forall \hat{F}\in V$
 \[\delta J|_{F_t}(\hat{F_t}-F_t)=\int_{c_t}^M(-\frac{\alpha_t}{(1-F_t(c_t))^2}+\lambda x)(\hat{f}(x)-f(x))dx\]
@@ -334,21 +351,57 @@ We must have
 hold on every where on $[c_t,M]$
 thus we obtain that
 \begin{equation}
-F_t(c)=\max\{1-\sqrt{\frac{\alpha_t}{\lambda c-\beta}},0\}\quad c\in(0,M) 
+F_t(c)=\begin{cases}
+  1-\frac{\nabla f_t}{\sqrt{\lambda c-\beta}} &c\in(\frac{\nabla f_t^2+\beta}{\lambda},M]  \\
+  0 & else 
+\end{cases}
 \end{equation}
+\end{IEEEproof}
+One major difficulty for the  is the determination of the determination of $\beta$ and $\lambda$
 Noticing that $F(x)$ is not continuous, according to Stieltjes Integral, we rewrite the constraint as following
-\[ \sum_{i=1}^n(\int_{c_i}^Mxf_i(x)dx+(1-F_i(M)M)\leq B\]
+\begin{equation*}
+\begin{aligned}
+&\sum_{t=1}^T(\int_{c_t}^MxdF_t(x))\\
+=&\sum_{t=1}^T(\int_{c_t}^Mxf_i(x)dx+(1-F_i(M)M)\\
+\leq &\sum_{t=1}^T\nabla f_t (\frac{2}{\lambda}\sqrt{\lambda M-\beta}+\frac{c_t}{\sqrt{\lambda c_t-\beta}}-\frac{2}{\lambda}\sqrt{\lambda c_t-\beta})\\
+\leq &B
+\end{aligned}
+\end{equation*}
 The Stieltjes Integral here has its practical significance. Because we assume that the cost lies between $[0,M]$, in other word, the mechanism do not accept any price higher than $M$, thus for all posted price $c$ that are higher than $M$, the mechanism will only pay $M$ instead of $c$.
-\subsection{Analysis of the result}
-Now since we get the solution of the $F_t$, the remaining work is to determine the $\lambda$
-. According to the property of Lagarangian, we have
-\[\frac{\partial J}{\partial \lambda}=\sum_{i=1}^n(\int_{c_i}^Mxf_i(x)dx+(1-F_i(M)M)-B=0\]
-After simple calculation, we can have an estimation of $\lambda$ as following
+
+
+Now since we get the solution of the $F_t$, the remaining work is to determine the parameters $\lambda$ and $\beta$, we go back to our initial optimizationproblem that minimize the regret bound. The Lagrangian is thus given as follows
 \begin{equation}
-\sum_{t=1}^T\frac{\nabla f_t(h_t)}{\sqrt{\lambda}}({2\sqrt{M}-\sqrt{c_t})\leq B}
+\begin{aligned}
+L(\mu,\beta,\lambda)=&\sum_t \bigg( \nabla f_t\Big( \sqrt{\lambda c_t-\beta}+\mu \big(\frac{2}{\lambda}\sqrt{\lambda M-\beta}\\
+&+\frac{c_t}{\sqrt{\lambda c_t-\beta}}-\frac{2}{\lambda}\sqrt{\lambda c_t-\beta}\big)\Big)\bigg)-\mu B
+\end{aligned}
 \end{equation}
-Combining the result in \ref{}, we can have that when we set $\eta$ to $\sqrt{2T}$, we achieve the regret bound of approximate $O(\frac{T}{\sqrt{B}})$. One problem in this situation is that we may not get enough prior knowledge to both $c_t$ and $\nabla f_t$. One way to solve the problem is that we initially set $\sqrt{\lambda}$ to a very small value, e.g. $0.0001$.  Then in each time $t$, we update the value of $\sqrt{\lambda}$ with 
-\[\sqrt{\lambda}=\sum_{i=1}^{t-1}\frac{\nabla f_t(h_t)}{t-1}(2\sqrt{M}-\sqrt{c_t}) \]
+According to the complementary relaxation condition, $\mu\neq 0$, which means that the constraint condition in $\ref{}$ for the optimal solution is strict. 
+To get the analytic solution of the optimal value of $\beta$ and $\lambda$ is infeasible , thus we use the numeric solution for the equation \ref{}.
+
+\subsection{Analysis of the result}
+We first simply set the $\beta=0$ for a special case. Through simple calculation, we can have an estimation of $\lambda_0$ as following
+\begin{equation}
+\lambda_0=\frac{T}{B}(2\theta_0-\theta)
+\end{equation}
+where $\theta_0=\frac{1}{T}\sum_t \nabla f_t\sqrt{M}$, $\theta=\frac{1}{T}\sum_t \nabla f_t\sqrt{c_t}$
+Since that $\partial L/\partial \beta >0$, $\partial L/\partial \lambda <0$, we obtain that the optimal solution $(\beta^*,\lambda^*)$ statisfy that $\beta^*>\beta^0$, $\lambda^*<\lambda_0$ Thus we have the estimate of the upper bound of the regret of RPM in theorem \ref{thm:reg-bnd}.
+\begin{theorem}\label{thm:reg-bnd}
+The regret of RPM in produced by the algorithm in \ref{} is bounded by
+\begin{equation}
+Regret<O(\frac{T}{\sqrt{B}}(2\theta_0-\theta)\alpha)
+\end{equation}
+where $\alpha=O(\sqrt{1-\frac{\beta B^2}{T\theta^2}})$
+\end{theorem}
+\begin{IEEEproof}
+To be determined
+\end{IEEEproof}
+One problem in this situation is that we may not get enough prior knowledge to both $c_t$ and $\nabla f_t$. One way to solve the problem is that we initially set $\beta$ to a fixed value and $\lambda$ to a very small value, e.g. $0.0001$.  Then in each time $t$, we update the value of $\lambda$ with 
+\begin{align}
+&\theta_0^{(t)}=\sum_{i=1}^{t-1}\frac{\nabla f_t(h_t)}{t-1}\sqrt{M}\\
+&\lambda^{(t)}=\frac{T^2}{B^2M}\theta_0^2+\frac{\beta}{M}
+\end{align}
 
 
 \section{The budget minimization senario}
@@ -357,11 +410,13 @@ In this senario, we consider the problem to find the most money-saving way to ac
 \sum_t c_t q_t \leq B \leq \sum_t Mq_t
 \end{equation}
 Thus what we have to do is to solve the optimization problem of the form
-\begin{align}
+\begin{equation}
+\begin{aligned}
 &\min_{q_t} c_t\\
 s.t. &\sum_t \frac{\nabla f_t^2}{q_t}\leq R\\
 	&0\leq q_t \leq 1
-\end{align}
+\end{aligned}
+\end{equation}
 \subsection{The optimal mechanism}
 Consider the convexity of the objective function, we give the Lagrangian
 \begin{equation}
@@ -403,8 +458,13 @@ where $\varphi=\sum_t\frac{1}{T}\nabla f_t(\sqrt{M}-\sqrt{c_t})$
 
 
 \section{Experiments and Simulations}\label{exp&sim}
-In this section, we give the ............ We use the data collected in FoxCom Shanghai,
-\subsection{}
+In this section, we conduct the experiments and simulations to validate the ,,,of our system model and data procurement mechanism. We use the data collected in FoxCom Shanghai,where we tested the RSS value of 10 AP in 13 different locations, the distribution of the location and AP points are shown in Figure\ref{}. Since that the workers collected our data did not ased for reward to us, we simply simulate the costs of the data through a normal distribution with mean value of $0.5$ and variance of $1$.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width =230pt ,keepaspectratio ]{exp-loc.png}
+\caption{Location Description.}
+\label{fig:exp-loc}
+\end{figure}
 
 \section{Conclusion and Future Work}\label{concandfuture}
 

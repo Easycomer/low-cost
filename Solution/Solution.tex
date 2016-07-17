@@ -1,7 +1,8 @@
 \documentclass{article}
 \usepackage{amsmath}
+\usepackage{cases}
 \begin{document}
-\title{Solution V2.0}
+\title{Solution V2.1}
 \author{LST}
 \maketitle
 \section{problem definition}
@@ -36,28 +37,42 @@ hold on every where on $[c_t,M]$
 We assume that
 \[-\frac{{\nabla f_t}^2}{(1-F_t(c_t))^2}+\lambda c_t= \beta \]
 where $\beta \geq 0$. thus we obtain that
-\[F_t(c)=1-\frac{\nabla f_t}{\sqrt{\lambda c-\beta}}\quad c\in(0,M)\]
+\begin{equation}
+F_t(c)=\begin{cases}
+  1-\frac{\nabla f_t}{\sqrt{\lambda c-\beta}} &c\in(\frac{\nabla f_t^2+\beta}{\lambda},M]  \\
+  0 & else 
+\end{cases}
+\end{equation}
+Noticing that $F(x)$ is not continuous, according to Stieltjes Integral, we rewrite the constraint as following
+\begin{align*}
+&\sum_{t=1}^T(\int_{c_t}^MxdF_t(x))\\
+=&\sum_{t=1}^T(\int_{c_t}^Mxf_i(x)dx+(1-F_i(M)M)\\
+\leq &\sum_{t=1}^T\nabla f_t (\frac{2}{\lambda}\sqrt{\lambda M-\beta}+\frac{c_t}{\sqrt{\lambda c_t-\beta}}-\frac{2}{\lambda}\sqrt{\lambda c_t-\beta})\\
+\leq &B
+\end{align*}
+The Stieltjes Integral here has its practical significance. Because we assume that the cost lies between $[0,M]$, in other word, the mechanism do not accept any price higher than $M$, thus for all posted price $c$ that are higher than $M$, the mechanism will only pay $M$ instead of $c$.
 
 In order to obtain the best $f_t$ we can get, we need to find the K-T point of the following optmization problem
 
 \[\min \sum_{i=1}^n \nabla f_t \sqrt{\lambda c_t-\beta}\]
-\[s.t. \nabla f_t\bigg[\\
-\frac{M}{\sqrt{\lambda M-\beta}+\frac{2}{3\lambda^2}\big[(\lambda M+2\beta)\sqrt{\lambda M-\beta}-(\lambda c_t+2\beta)\sqrt{\lambda c_t-\beta}\big]}\bigg]\leq B\]
+\[s.t. \sum_{t=1}^T\nabla f_t (\frac{2}{\lambda}\sqrt{\lambda M-\beta}+\frac{c_t}{\sqrt{\lambda c_t-\beta}}-\frac{2}{\lambda}\sqrt{\lambda c_t-\beta})\leq B\]
 \[\beta\geq 0\]
 \[\mu\geq 0\]
-We then write the Lagaranian of the problem
-\[
-L=\sum_t \nabla f_t \sqrt{\lambda c_t-\beta}-\mu\sum_t\Bigg[B-\nabla f_t\bigg[\\
-\frac{M}{\sqrt{\lambda M-\beta}+\frac{2}{3\lambda^2}\big[(\lambda M+2\beta)\sqrt{\lambda M-\beta}-(\lambda c_t+2\beta)\sqrt{\lambda c_t-\beta}\big]}\bigg]\Bigg]
-\]
+. The Lagrangian is thus given as follows
+\begin{align}
+L(\mu,\beta,\lambda)=\sum_t \bigg( \nabla f_t\Big( \sqrt{\lambda c_t-\beta}+\mu \big(\frac{2}{\lambda}\sqrt{\lambda M-\beta}
++\frac{c_t}{\sqrt{\lambda c_t-\beta}}-\frac{2}{\lambda}\sqrt{\lambda c_t-\beta}\big)\Big)\bigg)-\mu B
+\end{align}
 and get its gradient
-\[\frac{\partial L}{\partial \lambda}=\]
-\[\frac{\partial L}{\partial \beta}=\]
-Noticing that $F(x)$ is not continuous, according to Stieltjes Integral, we rewrite the constraint as following
-\[ \sum_{i=1}^n(\int_{c_i}^Mxf_i(x)dx+(1-F_i(M)M)\leq B\]
-According to the property of Lagarangian, we have
-\[\frac{\partial J}{\partial \lambda}=\sum_{i=1}^n(\int_{c_i}^Mxf_i(x)dx+(1-F_i(M)M)-B=0\]
-we can solve the $\lambda$ when we have the form of $F_t$
+\[\frac{\partial L}{\partial \lambda}=\sum_t \nabla f_t \big((\frac{c_t}{2}-\frac{\mu}{\lambda})\frac{1}{\sqrt{\lambda c_t-\beta}}+\frac{\mu}{\lambda}\frac{1}{\sqrt{\lambda M-\beta}}-\frac{1}{2}\frac{c_t^2\mu}{\sqrt{(\lambda c_t-\beta)^3}}\big)\]
+\[\frac{\partial L}{\partial \beta}=\sum_t \nabla f_t \big((\frac{\mu}{\lambda}-\frac{1}{2})\frac{1}{\sqrt{\lambda c_t-\beta}}-\frac{\mu}{\lambda}\frac{1}{\sqrt{\lambda M-\beta}}+\frac{\mu}{2}\frac{c_t}{\sqrt{(\lambda c_t-\beta)^3}}\big)\]
+Plus, we can easily show that $\mu$ can not equal to $0$, thus we have the equation
+\[B-\sum_{t=1}^T\nabla f_t (\frac{2}{\lambda}\sqrt{\lambda M-\beta}+\frac{c_t}{\sqrt{\lambda c_t-\beta}}-\frac{2}{\lambda}\sqrt{\lambda c_t-\beta})=0\]
+To solve the analytic solution of $\lambda$ and $\beta$ is infeasible. There are two solution here, first is to use a fixed parameter of $\lambda$ and a fixed $\beta$. The second one is that we first set a fixed $\beta$, and then update $\lambda$ in each time $t$
+\begin{align}
+&\theta_0^{(t)}=\sum_{i=1}^{t-1}\frac{\nabla f_t(h_t)}{t-1}\sqrt{M}\\
+&\lambda^{(t)}=\frac{T^2}{B^2M}{\theta_0^{(t)}}^2+\frac{\beta}{M}
+\end{align}
 \section{Note}
 The definition of Gateaux Deravative is 
 \[\delta J|_y(\eta)=\lim_{\epsilon \to 0} \frac{J(y+\epsilon \eta)-J(y)}{\epsilon}\]
