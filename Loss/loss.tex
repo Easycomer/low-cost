@@ -1,0 +1,68 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{Lemma}{Lemma}
+
+\newcommand{\ie}{{\em i.e.}}
+\newcommand{\eg}{{\em e.g.}}
+\newcommand{\et}{{\em et al.}}
+\newcommand{\st}{{\em s.t.}}
+
+
+
+\begin{document}
+\section{Analysis of two dimension localization}
+\subsection{probability of error}
+The RSS value in the environment is hard to know, however, some research \ref{} has shown that the mean value and variance of the RSS follows a relative . Thus it is proper for us to make the assumption that the mean value of RSS in position $\vec r$ follows a continuous distribution, the Gaussian distribution,e.g. Since that some experiment result show that the RSS value may actualyFor a more general case, we may assume that the measured RSS value $P$ in location $\vec r$ follows the distribution of $f_{\vec r}(x;h)$, where the $h$ is the parameter of the distribution, or in other word, the hypothesis.
+As shown in Figure \ref{},  we devide the physical space into many small circles each centered at $\vec r$ with radius $\vec \delta$, within each block we have a threshold  $P_{high}$ and $P_{low}$ for the RSS value$P$.  According to the $MLE$ principlr used in \ref{}, which means that the probablity that the RSS falls into the ideal region must higher than the other reigon, $P_{high}$ and $P_{low}$ should satisfy that 
+\begin{equation}
+\begin{aligned}
+&f_{\vec r-\delta}(P_{high})=f_{\vec r}(P_{high})\\
+&f_{\vec r+\delta}(P_{low})=f_{\vec r}(P_{low}) 
+\end{aligned}
+\end{equation}
+. Thus we may define the reliability as the probability of the system correctly estimate the user's location,  
+\begin{equation}
+R = \int_{{P_{low}}}^{{P_{high}}} {{f_r}(P)dP }
+\end{equation}
+which means the probablity of RSS value tested in position $r$ lies within the interval $[P_{low},P_{high}]$
+However, in real circumstnaces, the $P_{high}$ and $P_{low}$ are acquired through the training process, during which may recieve the imperfect data and thus cause the result to be inaccurate.The speculated location of the RSS value may migrate from the original one.  A very obvious situaiton is that the RSS value from one certain region may falsely be recognized to from other area. We thus use this probability to define the error of the RSS data we collected.
+\begin{equation}
+\begin{aligned}
+P(error) &= \iint_A {{f_A}}(Q)P(err|X = {X_0})dxdy\\
+&= 2\iint_A {{f_A}}(Q)\int_{{X_1}}^{{X_2}} {\frac{1}{{\sqrt {2\pi } \sigma }}{e^{ - \frac{{{{(X - {X_0})}^2}}}{{2{\sigma ^2}}}}}} dXdxdy
+\end{aligned}
+\end{equation}
+\subsection{The analysis of the loss}
+We can re write the probability of error as 
+\begin{equation}
+P(error)=g(R,P)=h(|R-P|)
+\end{eqaution}
+, where $R$ is the real RSS value and $\vec P$ is the measured data. In other word, $h(|R-P|)$ denotes the error between the real RSS value and the collected data. Obviously the real RSS value $x$ should satisfy that 
+\begin{equation}
+R=arg\min_{x\in R}E_Ph(|x-P|)
+\end{equation}
+\begin{theorem}
+The expectation of the error $f(P;h)$ get its minimum when $P$ equals real RSS value $R$. 
+\end{theorem}
+Now we set $|R-P|=klnf(R,P)$
+Assume that we sample $N$ data $x_1,...,x_N$, we let $h*$ be the value that that minimize the $\frac{1}{N}\sum_{i=1}^N f(x_i;h)$.The theorem \ref{} above shows that when the number of data we collected is enough, the $t*$ we obtain from the data will approximate to the real RSS value $r$. 
+\begin{theorem}
+The average error of $\hat{t}$ obtained from collected sample has at least $1-2e^{-\frac{2\epsilon^2}{N}}$ the probablity that is within $\epsilon$ close to the average error of real RSS data $r$, that is
+\begin{equation}
+Pr(\frac{1}{N}\sum_{i=1}^Nf(x_i;\hat{t})-E[f(x_i;r)]\leq\epsilon)\geq1-2e^{-\frac{2\epsilon^2}{N}}
+\end{equation}
+\end{theorem}
+This theorem shows us that
+\subsection{example of Gaussian Distribution}
+We may now give a more specific example of the theories we deduce above.We assume that the RSS value R folllow the Gaussian distribution with mean value of $\mu_{r}$, and according to many previous studies, we assume that the $\mu_{\vec r}$ is coninuous over $\vec r$.
+For the Gaussian distribution case, we give the specific form of these two threshold.
+\begin{equation}
+\begin{aligned}
+{P_{high}} = \frac{{\mu (\vec r) + (\mu (\vec r) + \nabla \cos \varphi )}}{2} = \mu (\vec r) + \frac{{\nabla \cos \varphi }}{2}\\
+{P_{low}} = \frac{{\mu (\vec r) + (\mu (\vec r) - \nabla \cos \varphi )}}{2} = \mu (\vec r) - \frac{{\nabla \cos \varphi }}{2}
+\end{aligned}
+\end{equation}
+\end{document}
