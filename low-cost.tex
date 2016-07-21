@@ -42,7 +42,7 @@
 
 \begin{document}
 
-\title{Quality Evaluation of Crowdsensed Fingerprints for Indoor Localization}
+\title{Effective RSS data procurement for Crowdsensed Fingerprints for Indoor Localization}
 
 %
 %\author{\IEEEauthorblockN{Shitao Li$^1$,Xinyu Wu$^2$,Yucheng Yang$^2$,Wenxin Li$^2$, Xiaohua Tian$^{2,3}$, Xinbing Wang$^{1,3}$}
@@ -58,7 +58,7 @@
 
 
 \begin{abstract}
-In crowdsensing, the dataprocurement is crucial
+Crowdsourcing is currently one of the most prevailing methodology used in the received signal strength (RSS) fingerprinting based Indoor localization. The quality of the RSS data collected from the crowds is crucial to the accuracy of the localization system. While efforts have been dedicated to the incentive mechanism for the crowdsourcing platform, the problem that how to judge whether the data we should use and how to economically get access to these data that we want still remains unknown.  In this paper, we give a quantitative measurement of the quality of data through the probabilistic model and propose a pricing mechanism to economically acquire the data given a limited budget under the basic framework of online machine learning. Our mechanism achieves the best performance in data purchasing than the state of the art method. And we further gives the theoretical analysis of the best quality of the data we can get access through the purchasing mechanism. Moreover, we give the alternative best money-saving strategy when the quality of data is required.(initial version)
 \end{abstract}
 
 
@@ -72,11 +72,12 @@ The fingerprinting based method utilizes Wi-Fi APs widely existing in buildings 
 
 As the crowdsensing data are collected by unprofessional participants with non-dedicated equipment, the sensing data obtained are usually with considerable noise. The quality of the sensing data is the crux for evaluating contribution of the participants, which is the vitally important for effective utilizing rewards to incentivize participants to accomplish sensing tasks satisfactorily. However, how to evaluate the quality of the crowdsensing data is a challenging issue, because there is no ground truth for the collected data to be compared with. Efforts have been made to evaluate the crowdsensing data quality \cite{ Crowdloc14}, and the task allocation scheme \cite{ Taskselection15, recruit}. and incentive mechanisms considering the data quality are proposed. 
 
-While the efforts have been made for the evaluation of the quality of the data, the RSS data procurement still remains not fully studied yet. Some quality-driven incentive mechanism\cite{Lbs2, noise,Pengdan15, incentive, Incentive2} were proposed, however, the state of the art method for crowdsensing data collection still focus on the incentive of workers and the utility of the platform. The economical problem is considered in \cite{Pengdan15}, however, the budget constraint of the platform and is not included. Besides, all the work listed above do not consider the situation when data is coming in a sequential order and only available in each round. How to acquire the high-quality data that is in a sequential order given the limited budget still requires more thorough investigation, which is the focus of this work. Our motivation is two-fold. On one hand, the existing work for sequential data procurement in the literature \cite{abernethy2015low}do not work well for the situation of indoor localization; on the other hand, we want to build a concrete measurement of RSS data specifically for the active learning mechanism. 
+%point that the 
+While the efforts have been made for the evaluation of the quality of the data, the RSS data procurement still remains not fully studied yet. Some quality-driven incentive mechanism\cite{Lbs2, noise,Pengdan15, incentive, Incentive2} were proposed, however, the state of the art method for crowdsensing data collection still focus on the incentive of workers and the utility of the platform. The economical problem is considered in \cite{Pengdan15}, however, the budget constraint of the platform is not included. Besides, all the work listed above do not consider the situation when data is coming in a sequential order and only available in each round. How to acquire the high-quality data that is in a sequential order given the limited budget still requires more thorough investigation, which is the focus of this work. Our motivation is two-fold. On one hand, the existing work for sequential data procurement in the literature \cite{abernethy2015low}do not work well for the situation of indoor localization; on the other hand, we want to build a concrete measurement of RSS data specifically for both the accuracy of the localization and the active learning mechanism. 
 
 %the target of the paper
 %pricing mechanism -> better RSS data -> better location precision
-In this paper, we and propose a pricing mechanism according to the of the in order to get a higher  . Our contributions are as following.
+In this paper, we propose a pricing mechanism that can get higher quality of RSS data within limited budget. Using the high quality data we procure, the localization system could set a localization with higher accuracy. Our contributions are as following.
 
 
 %the contribution and challenge
@@ -84,275 +85,162 @@ In this paper, we and propose a pricing mechanism according to the of the in ord
 
 \item  We design an effective way to measure the what kind of RSS data should we purchase. In most cases, the collected RSS data is not idealy in the exact position, to design an effective way to measure the impact of those imperfect data is crucial to our system. We make a thorough analysis of the impact that imperfect data may exert on the result of localization through the  probability model. 
 
-\item We give the pricing strategy for the mechanism to acquire the high quality data. The mechanism has a theoretically better performance than the classical one proposed in \ref{}. The mechanism is robust in most indoor-localization situations, even the prior knowledge of the costs is not well understood and the noise in the crowdsensing data is rather arbitrary. And we further provide a most economical data procure mechanism when the target accuracy of RSS data is given.
+\item We give the pricing strategy for the mechanism to acquire the high quality data. The mechanism has a theoretically better performance than the classical one proposed in \ref{}. The mechanism is robust in most indoor-localization situations, even the prior knowledge of the costs is not well understood and the noise in the crowdsensing data is rather arbitrary. 
 
 \end{itemize}
 
-The remaining of the paper is organized as following. The system structure and settings are given in section \ref{sysmodel}. The measurement  RSS data quality is presented in Section \ref{loss}. Section\ref{probdef}  gives the abstract definition for the online data procurement mechanism. Section \ref{weaksolution} describes the mechanism under the simple assumption that the costs data are drawn in a distribution. Section \ref{mainsolution} presents a generalized and more robust mechanism for the RSS data procurement. Section \ref{exp&sim} gives our simulations and experiments for the mechanism we given before.
+The remaining of the paper is organized as following. The system structure and settings are given in section \ref{sysmodel}. The measurement of the RSS data quality is presented in Section \ref{loss}. Section\ref{probdef}  gives the abstract definition for the online data procurement mechanism. Section \ref{mainsolution} presents a pricing mechanism for the RSS data procurement to get the data with best quality give the limited budget. Section \ref{mainsolution} presents an alternative senario for the mechanism to achieve the least purchasing cost when the quality of data is given. Section \ref{exp&sim} gives our simulations and experiments for the mechanism we given before.
 
 
 
-\section{Related Work \label{sectionrelatedwork}}
-\subsection{Fingerprinting based Indoor Localization}
-The RSS Fingerprinting based . The early technique,'nearest neighbour(s) in signal space'(NNSS) \cite{radar},outputs the location with minimum Euclidean distance between RSSes stored in the database and RSSes measured as the estimation of the user’s location. However, NNSS still dangles the possibility of accuracy enhancement in that it fails to realize the joint location estimation from multiple APs \cite{castro01}. In order to take advantage of these multiple APs, Chintalapudi \emph{et al.} bring up an algorithm entitled as EZ localization, whose main contribution occurs in estimating mobile devices without any pre-deployment support of multiple APs \cite{Chintalapudi10}. EZ will learn from those acquired fingerprints, which reflect the value of mean and standard deviation of the RSSes corresponding to different APs, during the collection phase. Wen \emph{et. al} made a thorough study of the 
-
-\subsection{incentive mechanism for  Indoor Localization}
-Fingerprinting based Indoor localization requires largePeng \emph {et al.} %point out the deficiency induced by continuous data with poor quality to the preciseness and availability of services predicated on crowdsensing in conventional incentive mechanism designing, and they
-bring up an incentive mechanism both stimulating data provision and ensuring high quality \cite{Peng2015Pay}. Jin \emph{et al.} introduce a key metric, quality of information(QoI), which generally evinces the quality of users’ sensory data%but whose definition varies among different applications
-\cite{Jin2015Quality}. Taking QoI into consideration, the incentive mechanism can acquire data with higher quality making for further study like better identification for problems of medical devices \cite{Jin2015Quality}.\\
-% %For instance, in the MedWatcher system, QoI represents the quality of a photo and higher quality photos got from the mechanism contribute to better identification for problems of medical devices. %Stepping further, Jin \emph {et al.} study the auction models used for single-minded and multi-minded cases respectively, where every user is set to execute a single subset of tasks in single-minded situations while execute multiple subsets of tasks in multi-minded scenarios. In single-minded situations a truthful and individual rational incentive mechanism is designed while in multi-minded ones an iterative descending mechanism is derived, both of which approximately reach their common objective--the optimal social welfare with an approximation ratio guaranteed.
-%%Peng \emph {et al.}
-%%point out the deficiency induced by continuous data with poor quality to the preciseness and availability of services predicated on crowdsensing in conventional incentive mechanism designing, and they
-%%also bring up an incentive mechanism to stimulate data provision and guarantee high quality \cite{Peng2015Pay}. Their concrete recipe is abstracted as follows. They firstly measures each participant's effort in contributing data by an effort matrix. %attaching the expectation maximization(EM) algorithm to settle the problem that the true reading cannot be made certain in most conditions.
-%%Then the mechanism calculates the quality of every user's data and figure out the user's efficient contribution on the foundation of the effort matrix. Finally %with the objective of galvanizing participants to hand in high quality sensing data,
-%%the mechanism supplies participants with rewards in correspondence with their effective contributions.\\
-In terms of new facets refreshing incentive mechanism research, Tham and Luo take timeliness of contributions into consideration \cite{Tham2013Quality}. %They characterize the quality of data as Quality of Contributed Service (QCS), which can be explained as follows: the more contributions, or the higher the quality of them, or the more up-to-date they are, the higher is the value of QCS. The up-to-date measurement of contributions reflects the influence of timeliness of contributions.
-%Specifically, They assume that the usefulness of data contributed by a user will go downhill with time and may ultimately be of no worth. By incorporating the temporal factor, they render the mechanism more analogous to realistic scenes such as employees will only get salaries a month later.
-%%the contributor will receive rewards after a period of time when they contribute their data, akin to
-%  %Nevertheless, their work is under the assumption of offline situation which deviates from our online background, and we do not involve timeliness of information in our work.
-%Kawajiri \emph{et al.} also provide a novel framework, Steered Crowdsensing, which aims to level up the quality of acquired data directly rather than the data size, pinpointing the problem that monetary pressure and time consumption perhaps ascend to an unbearable extent when the quantity of data is up-scaled \cite{Kawajiri2014Steered}.\\ %Steered Crowdsensing can be concluded as the following process. Users are initially given incentives by points of each location and they are required to collect data of these points. Then users will determine whether and where to gather data in light of points of each location.
-%%The crucial part of Steered Crowdsensing is that according to the analysis of the collected data, a kind of feedback will be brought out to steer the points, making for the enhancement of quality of data. Meanwhile, steered Crowdsensing keeps the quantity of data collected in control via incentive controlling methods, one of which is gamification. %What is similar to our work is that both apply their own incentive mechanism to the situation of indoor localization, while it is not concerned with online learning.
-%\indent However, the work mentioned above in this subsection except \cite{Kawajiri2014Steered} does not fit the incentive mechanism into indoor localization, which is not necessarily suitable in our work. How can incentive mechanism be properly utilized in the data procurement phase of localizing? Wen \emph{et al.} tailors quality-based incentive mechanism into a Wi-Fi fingerprint-based indoor localization system \cite{Wen2015Quality}. %Their mechanism can be interpreted as a worker will be paid based on the quality of sensory data procured in lieu of working time.
-%Moreover they present a stochastic model to assess the reliability of sensed data, crystallizing the measurement of quality of data under localization background. %In detail, They convert the unreliability of data into that of the user's sense of locality which can be profiled by experiments in advance. The profile of a user's sense of locality reflects the probability of a user's incorrectness of locality.
-%%which specifically means that a user may offer the data of the location where he regards but in fact he is at another location.
-%%The probabilistic information is then harnessed to discover the data with highest reliability. 
-%This probabilistic model is contained within their mechanism. Kawajiri \emph{et al.} also test their Steered Crowdsensing framework under the background of indoor localization \cite{Kawajiri2014Steered}. However, their models function in offline conditions, differing from our online ones depicted in the next subsection. %whose problem setting is that the data providers come in a queue instead of a batch and data buyers need to decide whether to purchase the coming data at once.
-% Zhang \emph{et al.} cope with the situation where the goal is to incentivize a batch of workers to label some binary tasks with a budget constraint \cite{zhang2015incentivize}.
-
-\subsection{Online learning used for Crowdsourcing}
-
-
-%During the inception of indoor localization research with WLAN as the background, the technique utilized to deduce a user's location is called 'nearest neighbour(s) in signal space'(NNSS) \cite{radar}, whose marrow is calculating the Euclidean distance between RSSes stored in the database and RSSes measured during localizing. NNSS outputs the location minimizing that distance as the ultimate estimation of the user’s location. However, NNSS still dangles the possibility of accuracy enhancement in that it fails to realize the joint location estimation from multiple APs \cite{castro01}.  
-%In order to take advantage of these multiple APs, Chintalapudi \emph{et al.} bring up an algorithm entitled as EZ localization, whose main contribution occurs in estimating mobile devices without any pre-deployment support of multiple APs \cite{Chintalapudi10}. EZ will learn from those acquired fingerprints, which reflect the value of mean and standard deviation of the RSSes corresponding to different APs, during the collection phase. 
-%%The key point of EZ is that it is erected on the fact that the physics of wireless propagation constrain the fingerprints reported to the server, and it models these constraints and couples them with a genetic algorithm to get the final solution. 
+%\section{Related Work \label{sectionrelatedwork}}
+%\subsection{Fingerprinting based Indoor Localization}
+%The RSS Fingerprinting based . The early technique,'nearest neighbour(s) in signal space'(NNSS) \cite{radar},outputs the location with minimum Euclidean distance between RSSes stored in the database and RSSes measured as the estimation of the user’s location. However, NNSS still dangles the possibility of accuracy enhancement in that it fails to realize the joint location estimation from multiple APs \cite{castro01}. In order to take advantage of these multiple APs, Chintalapudi \emph{et al.} bring up an algorithm entitled as EZ localization, whose main contribution occurs in estimating mobile devices without any pre-deployment support of multiple APs \cite{Chintalapudi10}. EZ will learn from those acquired fingerprints, which reflect the value of mean and standard deviation of the RSSes corresponding to different APs, during the collection phase. Wen \emph{et. al} made a thorough study of the 
 %
-%\subsection{Indoor localization model}
-%One of the common and convenient approaches to collect fingerprints used in Indoor localization is crowdsourcing. Wu \emph{et al.} design a localizing system LiFS, combining indoor localization with crowdsourcing and bypassing the conventional site survey process \cite{Yang12,Chenshu14}. They initially place several landmarks in the physical space, and then harness information from user motions and pinned sensors in smart phone to set up a sample space with high dimension. %The materialization of this sample space relies on Multidimensional Scaling(MDS) algorithm, visualizing the information of similarities and dissimilarities concealed in data \cite{Yang12}. Meanwhile, since the high-dimensional space generated by MDS can be applied to characterize the physical space as well, the estimation of a user’s location can be derived via comparing physical space and sample space with high dimension.
-%%More utilization of crowdsourcing method has been revealed. 
-%Rai \emph{et al.} develop a system called Zee to enable zero-effort crowdsourcing \cite{Rai12}. %which denotes that no explicit effort on the part of users is needed  
-%While a mobile device is traversing indoors scanning Wi-Fi signals, Zee leverages inner sensors of the device to track the device itself. Shen \emph{et al.} also present a crowdsourcing based system \emph{Walkie-Markie} \cite{walkie} to generate indoor pathway maps from the user contributed data. %The central idea of the system is to exploit Wi-Fi-Marks defined by Wi-Fi RSS features in the indoor space, so that crowdsourced data can be fused.
-%%Luo \emph{et al.} propose a self-calibrating participatory indoor localization system \cite{piloc}, which requires no prior knowledge about the building and user intervention including the floor planning. %Additionally, Crowdsourcing approach has also been applied to various domains such as transportation \cite{transportation2}, environment surveillance \cite{environment, environment2} and location based service \cite{lbs,Wen2015Quality}.
-%
-%%Nevertheless, the above work has not placed a premium on the fingerprint procurement phase, just concluding this procedure as crowdsourcing. In fact, more complex situations should be underscored in realistic fingerprint acquirement. %For instance, we need to hire fingerprint samplers to collect fingerprints to construct our database, and our budget is limited practically, therefore probably we cannot buy all sampled fingerprints. How should we offer our price to fingerprints from each sampler, maximizing localizing accuracy with the fixed budget? Perhaps samplers come in a batch or a queue, so what is the optimal purchasing strategy for these two conditions respectively?
-%
-%
-%\subsection{Incentive design for crowdsourcing}
-%%In realistic situations, data providers are not always willing to sell their data to us for sundry reasons such as dissatisfying with the price we offer compared with the estimated cost in their mind or worrying about data privacy. To cope with this problem, the incentive mechanism should galvanize them to supply us with their data, with means like offering them compensation. Furthermore, given that the data we need are required to be accurate enough, incentive mechanism should assure good quality of collected data. %and ii) truthfulness, which means that the mechanism should let data providers to report the cost of their data identical to the expected cost in their mind rather than raising their reporting cost arbitrarily. %The core of the `persuasion’ is to assure data providers that they cannot receive higher profits than reporting their true cost in mind, thus they have no intention to mount their reporting cost.
-%
-%Peng \emph {et al.} 
-%%point out the deficiency induced by continuous data with poor quality to the preciseness and availability of services predicated on crowdsensing in conventional incentive mechanism designing, and they
+%\subsection{incentive mechanism for  Indoor Localization}
+%Fingerprinting based Indoor localization requires largePeng \emph {et al.} %point out the deficiency induced by continuous data with poor quality to the preciseness and availability of services predicated on crowdsensing in conventional incentive mechanism designing, and they
 %bring up an incentive mechanism both stimulating data provision and ensuring high quality \cite{Peng2015Pay}. Jin \emph{et al.} introduce a key metric, quality of information(QoI), which generally evinces the quality of users’ sensory data%but whose definition varies among different applications
 %\cite{Jin2015Quality}. Taking QoI into consideration, the incentive mechanism can acquire data with higher quality making for further study like better identification for problems of medical devices \cite{Jin2015Quality}.\\
-% %For instance, in the MedWatcher system, QoI represents the quality of a photo and higher quality photos got from the mechanism contribute to better identification for problems of medical devices. %Stepping further, Jin \emph {et al.} study the auction models used for single-minded and multi-minded cases respectively, where every user is set to execute a single subset of tasks in single-minded situations while execute multiple subsets of tasks in multi-minded scenarios. In single-minded situations a truthful and individual rational incentive mechanism is designed while in multi-minded ones an iterative descending mechanism is derived, both of which approximately reach their common objective--the optimal social welfare with an approximation ratio guaranteed.
-%%Peng \emph {et al.}
-%%point out the deficiency induced by continuous data with poor quality to the preciseness and availability of services predicated on crowdsensing in conventional incentive mechanism designing, and they
-%%also bring up an incentive mechanism to stimulate data provision and guarantee high quality \cite{Peng2015Pay}. Their concrete recipe is abstracted as follows. They firstly measures each participant's effort in contributing data by an effort matrix. %attaching the expectation maximization(EM) algorithm to settle the problem that the true reading cannot be made certain in most conditions.
-%%Then the mechanism calculates the quality of every user's data and figure out the user's efficient contribution on the foundation of the effort matrix. Finally %with the objective of galvanizing participants to hand in high quality sensing data,
-%%the mechanism supplies participants with rewards in correspondence with their effective contributions.\\
-%\indent In terms of new facets refreshing incentive mechanism research, Tham and Luo take timeliness of contributions into consideration \cite{Tham2013Quality}. %They characterize the quality of data as Quality of Contributed Service (QCS), which can be explained as follows: the more contributions, or the higher the quality of them, or the more up-to-date they are, the higher is the value of QCS. The up-to-date measurement of contributions reflects the influence of timeliness of contributions.
-%Specifically, They assume that the usefulness of data contributed by a user will go downhill with time and may ultimately be of no worth. By incorporating the temporal factor, they render the mechanism more analogous to realistic scenes such as employees will only get salaries a month later.
-%%the contributor will receive rewards after a period of time when they contribute their data, akin to
-%  %Nevertheless, their work is under the assumption of offline situation which deviates from our online background, and we do not involve timeliness of information in our work.
-%Kawajiri \emph{et al.} also provide a novel framework, Steered Crowdsensing, which aims to level up the quality of acquired data directly rather than the data size, pinpointing the problem that monetary pressure and time consumption perhaps ascend to an unbearable extent when the quantity of data is up-scaled \cite{Kawajiri2014Steered}.\\ %Steered Crowdsensing can be concluded as the following process. Users are initially given incentives by points of each location and they are required to collect data of these points. Then users will determine whether and where to gather data in light of points of each location.
-%%The crucial part of Steered Crowdsensing is that according to the analysis of the collected data, a kind of feedback will be brought out to steer the points, making for the enhancement of quality of data. Meanwhile, steered Crowdsensing keeps the quantity of data collected in control via incentive controlling methods, one of which is gamification. %What is similar to our work is that both apply their own incentive mechanism to the situation of indoor localization, while it is not concerned with online learning.
-%\indent However, the work mentioned above in this subsection except \cite{Kawajiri2014Steered} does not fit the incentive mechanism into indoor localization, which is not necessarily suitable in our work. How can incentive mechanism be properly utilized in the data procurement phase of localizing? Wen \emph{et al.} tailors quality-based incentive mechanism into a Wi-Fi fingerprint-based indoor localization system \cite{Wen2015Quality}. %Their mechanism can be interpreted as a worker will be paid based on the quality of sensory data procured in lieu of working time.
-%Moreover they present a stochastic model to assess the reliability of sensed data, crystallizing the measurement of quality of data under localization background. %In detail, They convert the unreliability of data into that of the user's sense of locality which can be profiled by experiments in advance. The profile of a user's sense of locality reflects the probability of a user's incorrectness of locality.
-%%which specifically means that a user may offer the data of the location where he regards but in fact he is at another location.
-%%The probabilistic information is then harnessed to discover the data with highest reliability. 
-%This probabilistic model is contained within their mechanism. Kawajiri \emph{et al.} also test their Steered Crowdsensing framework under the background of indoor localization \cite{Kawajiri2014Steered}. However, their models function in offline conditions, differing from our online ones depicted in the next subsection. %whose problem setting is that the data providers come in a queue instead of a batch and data buyers need to decide whether to purchase the coming data at once.
-% Zhang \emph{et al.} cope with the situation where the goal is to incentivize a batch of workers to label some binary tasks with a budget constraint \cite{zhang2015incentivize}.
-% 
-%\subsection{Online learning}
+
+\section{Related Work \label{sectionrelatedwork}}
+\subsection{Indoor localization with crowdsourcing}
+
+%During the inception of indoor localization research in the context of WLAN, the technique to deduce a user's location is called 'nearest neighbour(s) in signal space'(NNSS) , whose marrow is calculating the Euclidean distance between RSSes stored in the database and RSSes measured during localizing, with the location minimizing that distance output as the ultimate estimation of the user’s location \cite{radar}. However, NNSS still dangles the possibility of accuracy enhancement in that it fails to realize the joint location estimation from multiple APs \cite{castro01}.
+
+%In order to take advantage of these multiple APs, Chintalapudi \emph{et al.} bring up an algorithm entitled as EZ localization, whose main contribution occurs in estimating mobile devices without any pre-deployment support of multiple APs \cite{Chintalapudi10}. EZ will learn from those acquired fingerprints, which reflect the value of mean and standard deviation of the RSSes corresponding to different APs, during the fingerprint collection phase. %The key point of EZ is that it is erected on the fact that the physics of wireless propagation constrain the fingerprints reported to the server, and it models these constraints and couples them with a genetic algorithm to get the final solution.
+
+In fingerprinting based indoor localization, one of the common approaches to collect fingerprints is crowdsourcing, in which any user with a mobile device like smart phone can acquire data while walking freely, without the requirement for users to have any technical training \cite{}. Wu \emph{et al.} design a localizing system LiFS, combining indoor localization with crowdsourcing and bypassing the conventional site survey process \cite{Yang12,Chenshu14}. They initially place several landmarks in the physical space, and then harness information from user motions and pinned sensors in smart phone to set up a sample space with high dimension, with which approximates the user's location. %The materialization of this sample space relies on Multidimensional Scaling(MDS) algorithm, visualizing the information of similarities and dissimilarities concealed in data \cite{Yang12}. Meanwhile, since the high-dimensional space generated by MDS can be applied to characterize the physical space as well, the estimation of a user’s location can be derived via comparing physical space and sample space with high dimension.
+%More utilization of crowdsourcing method has been revealed.
+%Rai \emph{et al.} develop a system called Zee \cite{Rai12}. %which denotes that no explicit effort on the part of users is needed
+%While a mobile device is traversing indoors scanning Wi-Fi signals, Zee leverages inner sensors of the device to track the device itself. 
+Moreover, Shen \emph{et al.} present a crowdsourcing based system \emph{Walkie-Markie} \cite{walkie} to generate indoor pathway maps from the user contributed data. %The central idea of the system is to exploit Wi-Fi-Marks defined by Wi-Fi RSS features in the indoor space, so that crowdsourced data can be fused.
+and Luo \emph{et al.} propose a self-calibrating participatory indoor localization system \cite{piloc}, which requires no prior knowledge about the building and user intervention including the floor planning. %Additionally, Crowdsourcing approach has also been applied to various domains such as transportation \cite{transportation2}, environment surveillance \cite{environment, environment2} and location based service \cite{lbs,Wen2015Quality}.
+
+Nevertheless, the above work has not placed a premium on the fingerprint procurement phase. %just concluding this procedure as crowdsourcing. 
+In fact, concentration is needed in this part. For instance, we need to hire samplers to collect fingerprints to construct our database with limited budget practically, therefore probably we cannot buy all sampled fingerprints. How should we offer our price to fingerprints from each sampler, maximizing localizing accuracy? Perhaps samplers come in a batch or a queue, so what is the optimal purchasing strategy for these two conditions respectively? Zhang \emph{et al.} cope with the situation where the goal is to incentivize a batch of workers to label some binary tasks with a budget constraint \cite{zhang2015incentivize}, while in our work we shed light on the scenario that samplers come in a queue with fingerprints, with budget constraint concerned as well.
+
+\subsection{Incentive meachnism design for crowdsourcing}
+In realistic situations, data providers are not always willing to sell their data to us for reasons like dissatisfying with the price we offer %compared with the estimated cost in their mind
+or worrying about data privacy. To cope with this problem, the incentive mechanism should galvanize them to supply us with their data, with means like offering them compensation. Furthermore, given that the data we need are required to be accurate enough, incentive mechanism should assure good quality of them. %and ii) truthfulness, which means that the mechanism should let data providers to report the cost of their data identical to the expected cost in their mind rather than raising their reporting cost arbitrarily. %The core of the `persuasion’ is to assure data providers that they cannot receive higher profits than reporting their true cost in mind, thus they have no intention to mount their reporting cost.
+
+With regard to data quality, %Peng \emph {et al.}
+%point out the deficiency induced by continuous data with poor quality to the preciseness and availability of services predicated on crowdsensing in conventional incentive mechanism designing, and they
+%bring up an incentive mechanism both stimulating data provision and ensuring high quality \cite{Peng2015Pay}. 
+Jin \emph{et al.} introduce a key metric, quality of information(QoI), which evinces the quality of users’ sensory data%but whose definition varies among different applications
+\cite{Jin2015Quality}. Taking QoI into consideration, the incentive mechanism can acquire data with higher quality \cite{Jin2015Quality}.%making for further study like better identification for problems of medical devices
+ %For instance, in the MedWatcher system, QoI represents the quality of a photo and higher quality photos got from the mechanism contribute to better identification for problems of medical devices. %Stepping further, Jin \emph {et al.} study the auction models used for single-minded and multi-minded cases respectively, where every user is set to execute a single subset of tasks in single-minded situations while execute multiple subsets of tasks in multi-minded scenarios. In single-minded situations a truthful and individual rational incentive mechanism is designed while in multi-minded ones an iterative descending mechanism is derived, both of which approximately reach their common objective--the optimal social welfare with an approximation ratio guaranteed.
+%Peng \emph {et al.}
+%point out the deficiency induced by continuous data with poor quality to the preciseness and availability of services predicated on crowdsensing in conventional incentive mechanism designing, and they
+%also bring up an incentive mechanism to stimulate data provision and guarantee high quality \cite{Peng2015Pay}. Their concrete recipe is abstracted as follows. They firstly measures each participant's effort in contributing data by an effort matrix. %attaching the expectation maximization(EM) algorithm to settle the problem that the true reading cannot be made certain in most conditions.
+%Then the mechanism calculates the quality of every user's data and figure out the user's efficient contribution on the foundation of the effort matrix. Finally %with the objective of galvanizing participants to hand in high quality sensing data,
+%the mechanism supplies participants with rewards in correspondence with their effective contributions.\\
+%New facets about data quality research refreshing incentive mechanism research, 
+Tham and Luo take timeliness of data into consideration of quality\cite{Tham2013Quality}. %They characterize the quality of data as Quality of Contributed Service (QCS), which can be explained as follows: the more contributions, or the higher the quality of them, or the more up-to-date they are, the higher is the value of QCS. The up-to-date measurement of contributions reflects the influence of timeliness of contributions.
+They assume that the quality of data contributed will go downhill with time. %and may ultimately be of no worth. 
+By incorporating the temporal factor, they render the mechanism more analogous to realistic scenes such as employees will get salaries a month later.
+%the contributor will receive rewards after a period of time when they contribute their data, akin to
+  %Nevertheless, their work is under the assumption of offline situation which deviates from our online background, and we do not involve timeliness of information in our work.
+Kawajiri \emph{et al.} provide a novel framework, %Steered Crowdsensing,
+which aims to level up the quality of data directly rather than the data size, pinpointing the problem that monetary pressure and time consumption may ascend to an unbearable extent when the quantity of data is up-scaled \cite{Kawajiri2014Steered}.\\ %Steered Crowdsensing can be concluded as the following process. Users are initially given incentives by points of each location and they are required to collect data of these points. Then users will determine whether and where to gather data in light of points of each location.
+%The crucial part of Steered Crowdsensing is that according to the analysis of the collected data, a kind of feedback will be brought out to steer the points, making for the enhancement of quality of data. Meanwhile, steered Crowdsensing keeps the quantity of data collected in control via incentive controlling methods, one of which is gamification. %What is similar to our work is that both apply their own incentive mechanism to the situation of indoor localization, while it is not concerned with online learning.
+\indent However, the work mentioned above in this subsection except \cite{Kawajiri2014Steered} does not fit the incentive mechanism into indoor localization. %which is not necessarily suitable in our work. 
+How can incentive mechanism be properly utilized in our context? Wen \emph{et al.} tailors quality-based incentive mechanism into a Wi-Fi fingerprint-based indoor localization system \cite{Wen2015Quality}. %Their mechanism can be interpreted as a worker will be paid based on the quality of sensory data procured in lieu of working time.
+Moreover they present a stochastic model to assess the reliability of sensed data, crystallizing the way to measure data quality in localization. %In detail, They convert the unreliability of data into that of the user's sense of locality which can be profiled by experiments in advance. The profile of a user's sense of locality reflects the probability of a user's incorrectness of locality.
+%which specifically means that a user may offer the data of the location where he regards but in fact he is at another location.
+%The probabilistic information is then harnessed to discover the data with highest reliability.
+This probabilistic model is contained within their mechanism. Kawajiri \emph{et al.} also test their framework under the background of indoor localization \cite{Kawajiri2014Steered}. However, their models function in offline conditions, differing from our online ones. %whose problem setting is that the data providers come in a queue instead of a batch and data buyers need to decide whether to purchase the coming data at once.
+
+\subsection{Online learning}
+
+%Online learning is one of the dominant mathematical models our work utilizes. %It is generally carried out in the situation where there are continuous question-and-answer rounds and a question comes up in each round. The learner is required to predict an answer of the question in current round. After that the correct answer will be presented to the learner. The learner will suffer a loss reflecting the discrepancy between this prediction and the true answer, and then the learner continues to the next round. The ultimate goal of the learner is to minimize the loss or other parameters related to it \cite{shalev2011online}.%One of the most notable properties of the learner’s prediction in a round is that it can be depended on historical information learned from previous rounds so that a more reasonable answer will be given in this round. For instance, one can offer a prediction in $t$-th round which minimizes the sum of previous $t-1$ loss functions, rendering it as an optimization problem \cite{abernethy2015low}. In fact, online learning problems are tied tightly with online optimization \cite{shalev2011online}.
+There are assorted theoretical studies pertinent to online learning. Shalev-Shwartz summarizes classical methods such as Follow-the-Regularized-Leader(FTRL) and Online-to-Batch Conversions(OBC) in online learning  \cite{shalev2011online}. %Furthermore he presents some typical applications of online learning methods composed of online classification, multi-armed bandit problem and so on.
+Zinkevich introduces an effective algorithm: Generalized Infinitesimal Gradient Ascent (GIGA), which formulates a common form of online optimization algorithm \cite{zinkevich2003online}. 
+%However, these fundamental analyses do not touch the usage of online learning in practical models, which means that these classical methods need modifications before being fit in with specific industrial objectives.
+
+Execution of online learning theory in realistic models has been materialized. Abernethy \emph{et al.} embed the theory into online data procurement \cite{abernethy2015low}.Specifically the situation is that a learner with a limited budget purchases data from agents coming in an online way, and the learner needs to propose a hypothesis and a price in each round to get accesss to the data.
+% If the price is bigger than cost expected in the agent's mind, then the deal is closed and information of data in this round will be learned. The discrepancy between true data and the hypothesis is the loss. The goal of their work is to design the pricing strategy of every round and derive a good hypothesis whose loss is not much more than the theoretically optimal one.
+%The concrete problem setting is as follows. A data collector has to purchase data with a limited budget $B$, and the mechanism posts a price $\pi$ of the coming data to an agent in each round. After that the agent acquires the true cost $C$ from the data provider and compare it with $\pi$, if $\pi > C$ then the transaction is achieved with data, cost and loss learned by the mechanism, or else the deal fails with nothing learned. The terminate goal is to propose a pricing strategy reaching the lowest regret, which represents the difference between loss of our pricing hypothesis and that of the theoretically optimal one. They apply the FTRL and OBC to settle this problem with the final result a regret bound of $O(T/\sqrt{B})$. 
+However, %this work makes some assumptions controversial in reality for simplification due to the inaccessibility to the final answer of original problem, such as if a deal is closed the mechanism will only pay $C$ in lieu of practically $\pi$. What’s more,
+they only describe parameters abstractly in their work. In more specific work like indoor localization the concrete meanings of data, loss and so on should be clarified.
+
+In our work we carry out some adjustments over the framework of \cite{abernethy2015low} to fit into indoor localization background. We inject particular meanings to parameters, for instance data is RSS offered by signal samplers%and cost is the money we should pay for RSS values from samplers,
+and loss is the localizing error we suffer using data purchased, thus we can derive our solution with more specific forms. %Moreover the prediction in each round is the estimated RSS value given by the mechanism. %in accordance with sampled RSS values, while regret is the distance between estimation and true value of RSS at this location.
+Deeper technical modifications of the model in \cite{abernethy2015low} will be displayed in the next subsection.
 %
-%Online learning is one of the dominant mathematical models our work utilizes. It is generally carried out in the situation where there are continuous question-and-answer rounds and a question comes up in each round. The learner is required to predict an answer of the question in current round. After that the correct answer will be presented to the learner. The learner will suffer a loss reflecting the discrepancy between this prediction and the true answer, and then the learner continues to the next round. The ultimate goal of the learner is to minimize the loss or other parameters related to it \cite{shalev2011online}.%One of the most notable properties of the learner’s prediction in a round is that it can be depended on historical information learned from previous rounds so that a more reasonable answer will be given in this round. For instance, one can offer a prediction in $t$-th round which minimizes the sum of previous $t-1$ loss functions, rendering it as an optimization problem \cite{abernethy2015low}. In fact, online learning problems are tied tightly with online optimization \cite{shalev2011online}.
+%\subsection{Other mathematical tools}
 %
-%%There are assorted theoretical studies pertinent to online learning. Shalev-Shwartz sorts out a refined survey about the theory \cite{shalev2011online}. He summarizes classical methods such as Follow-the-Regularized-Leader(FTRL) and Online-to-Batch Conversions(OBC) in online learning. %Furthermore he presents some typical applications of online learning methods composed of online classification, multi-armed bandit problem and so on.
-%Zinkevich introduces an effective algorithm: Generalized Infinitesimal Gradient Ascent (GIGA), which formulates a common form of online optimization algorithm \cite{zinkevich2003online}. However, these fundamental analyses do not touch the usage of online learning in practical models, which means that the classical methods need modifications before being fit in with specific industrial objectives. 
+%%More mathematical tools involved in our analyses are to be discussed. Firstly, Abernethy \emph{et al.} meet the problem that since budget is limited and probably the excessively expensive data come, it is improper to purchase all arriving data \cite{abernethy2015low}. However, the situation is that no matter the mechanism achieves the trade in a round or not, there will be a loss. Therefore if the mechanism solely decides the prediction by losses of purchased data, there will be a bias of the overall loss since data not acquired generate losses as well. Hence they adopt a tactic called importance-weighting which gives an unbiased estimation of the whole loss by using losses of data procured. Theoretical analyses of importance-weighting can be discovered in \cite{beygelzimer2009importance}. Specifically in \cite{abernethy2015low} they transform the primal loss function of acquired data in $t$-th round via dividing it by the probability $q_t$ of making this deal, forming a new loss function as the input of FTRL, while inputing 0 if the deal fails. However when $q_t$ is too small, the variance of estimation will mount largely and the regret bound in their model will increase dramatically as well. In our work we adapt the importance-weighting technique into a more reasonable one to inhibit the possibility of the surge of variance and regret bound.
 %
-%Execution of online learning theory in realistic models has been materialized. Abernethy \emph{et al.} embed the theory into online data procurement $T$ rounds \cite{abernethy2015low}. 
-%%The concrete problem setting is as follows. A data collector has to purchase data with a limited budget $B$, and the mechanism posts a price $\pi$ of the coming data to an agent in each round. After that the agent acquires the true cost $C$ from the data provider and compare it with $\pi$, if $\pi > C$ then the transaction is achieved with data, cost and loss learned by the mechanism, or else the deal fails with nothing learned. The terminate goal is to propose a pricing strategy reaching the lowest regret, which represents the difference between loss of our pricing hypothesis and that of the theoretically optimal one. They apply the FTRL and OBC to settle this problem with the final result a regret bound of $O(T/\sqrt{B})$. However, this work makes some assumptions controversial in reality for simplification due to the inaccessibility to the final answer of original problem, such as if a deal is closed the mechanism will only pay $C$ in lieu of practically $\pi$. What’s more, they only endow abstract meanings of parameters in their work, thus for more specific work like indoor localization the concrete meaning of data, cost, loss and so on should be clarified.
-%
-%In our work we carry out some adjustments over the framework of \cite{abernethy2015low} to fit into indoor localization background. We inject particular meanings to the parameters in our context. Data is the received signal strength(RSS) offered by signal samplers, 
-%%and cost is the money we should pay for RSS values from samplers, while 
-%we define loss is the localizing error we suffer using data we have purchased. Moreover the prediction in each round is the estimated RSS value given by the mechanism. 
-%%in accordance with sampled RSS values, while regret is the distance between estimation and true value of RSS at this location.Deeper technical modifications of the model in \cite{abernethy2015low} will be displayed in the next subsection.
-%
-%%Another research point lies in the budget constraint of the online optimization problem. In \cite{abernethy2015low}, Abernethy \emph{et al.} simplify the optimization by loosing the budget constraint for the complexity of integral in the expression of cost expectation. However, it leaves the probability that the optimal result output by mechanism in \cite{abernethy2015low} may not make the regret bound tight enough, or even the output is infeasible in the original problem setting for constraint relaxing. In order to reaching a more precise solution, we directly solve the initial problem without relaxation by means of calculus variation. Calculus variation is associated with functional theories, viewing functions as decision variables, and it can derive the exact solution of functional optimization
-% \cite{liberzon2012calculus,roth2012conducting}. %In our work decision variables are cumulative distribution functions reflecting the probability of buying data in each round.
-%With calculus variation applied, we derive the accurate pricing strategy for this problem.
+%Another research point lies in the budget constraint of the online optimization problem. In \cite{abernethy2015low},
+%Abernethy \emph{et al.} simplify the optimization by loosing the budget constraint %for the complexity of the expression of cost expectation.
+%However, it leaves the probability that the optimal result output by mechanism in \cite{abernethy2015low} may not make the regret bound tight enough, or even the output is infeasible in the original problem for constraint relaxing. In our work we solve the problem by means of calculus variation. Calculus variation is associated with functional theories, and it can derive the exact solution of functional optimization \cite{liberzon2012calculus,roth2012conducting}. %In our work decision variables are cumulative distribution functions reflecting the probability of buying data in each round.
+%With calculus variation applied, we derive a more accurate pricing strategy for this problem.
 
 \section{System Model}\label{sysmodel}
 In this section we describe our system model and give out the problem formulation.
 
-We present a mobile crowdsensing system consisted of \emph{RSS procurement mechanism}. For the purpose of performing accurate indoor localization in region $\mathcal{V}$, the data purchaser has to build the corresponding \emph{Fingerprint Database} of \emph{Received Signal Strength}(RSS). Therefore the data purchaser releases tasks of collecting data--RSS value on the platform. For a specific location $s\in \mathcal{V}$, we use $\mathds{W}_s=\{w_1,w_2,...,w_{N_s}\}$ to denote the corresponding applicants set. To simplify the notation, we omit the identification of $s$ in almost all the rest of this paper. Without loss of generality, we mainly focus on workers with the same location's data. It's rational that data purchaser need to buy several data points at one location since the RSS value is not constant, in fact it obeys some probability distribution, we assume that its probability density function is $\mathcal{D}(\cdot)$. Consequently, we need several amounts of samples to learn the distribution, more specifically, to estimate the mean value of RSS.
+We present a mobile crowdsensing system consisted of \emph{RSS Procurement mechanism}. For the purpose of performing accurate indoor localization in region $\mathcal{V}$, the data purchaser has to build the corresponding \emph{Fingerprint Database} of \emph{Received Signal Strength}(RSS). Therefore the data purchaser releases tasks of collecting data--RSS value on the platform. For a specific location $s\in \mathcal{V}$, we use $\mathds{W}_s=\{w_1,w_2,...,w_{N_s}\}$ to denote the corresponding applicants set. To simplify the notation, we omit the identification of $s$ in almost all the rest of this paper. Without loss of generality, we mainly focus on workers with the same location's data. It's rational that data purchaser need to buy several data points at one location since the RSS value is not constant, in fact it obeys some probability distribution, we assume that its probability density function is $\mathcal{D}(\cdot)$. Consequently, we need several amounts of samples to learn the distribution, more specifically, to estimate the mean value of RSS.
 
 At the very beginning, the data purchaser needs to submit his \emph{Pricing Mechanism} $\mathbb{M}$ to the platform. Here we consider the most nature trading scenario: these $N$ workers arrive in a sequential way with his data $x_i$. Once agents $i$ arrives, he submit his bid $c_i$ to the platform and the platform compute its price $p_i$ using a mechanism $\mathbb{M}$. If $p_i\geq b_i$ then agents $w_i$ accept this transaction: the platform pays $b_i$ to worker $i$ and receives data $x_i$, otherwise the worker reject the transaction and the platform receives null signal.
-\begin{table}[h]
-\caption{\textsc{Notations}} \label{tab:Notation}
-\centering
-\resizebox{\columnwidth}{!}{
-\begin{tabular}[t]{l|p{7cm}}
-\hline
-Notation&Remark \\
-\hline\hline
-$\mathcal{V}$ & Indoor location region\\
-$s$ & A specific location\\
-$\mathds{W}_{s}=\{w_1, \cdots,w_{N_s}\}$ & Applications set for location $s$\\
-$\mathcal{D}(\cdot)$ & Probability density function\\
-$\mathbb{M}$ & Pricing mechanism\\
-$w_i$ & The $i_{th}$ worker\\
-$x_i, b_i, p_i$ & $w_i$'s data, bid, and corresponding price\\
-\hline
-\end{tabular}
-}
-\end{table}
 
-%\section{Analysis of two-dimensiion localization}\label{loss}
-%\subsection{One-Time Measurement for Single AP in Two-Dimension Space}
-%Hereinafter we are devoted to the analysis of one-time measurement for a single AP in two-dimension physical space. Although our research object has been upgraded from a corridor to a room, a more complex one, the kernel thought of our analysis is analogical to that in one-dimension condition, with solely difference in addressing the problem of physical space in a two-dimension Cartesian Coordinate. Ultimately we derive the expression of $P_{high}$ and $P_{low}$ in the sample space of two-dimension physical space, which form $[{P_{low}},{P_{high}}]$, as the feasible interval for judging a users' location, and furthermore study the possible localizing error incurred by imperfect data.
-%
-%\subsubsection{Maximum Likelihood Estimation in two-dimension physical space}
-%\begin{figure}[!htbp]
-%\centering
-%\includegraphics [width = 7cm]{Figure1.png}
-%%\vspace{-2 mm}
-%\caption{Description.}
-%\label{fig:1}
-%%\vspace{-5 mm}
-%\end{figure}
-%
-%Figure 1 illustrates our model in two-dimension physical space. We designate the AP we sample as the original point $O$ of the coordinate system, and denote $A$ as as the users' actual location which we focus on estimating. Assume that the distribution of RSS around $A$ are circular symmetric , therefore we can define region $E$ as a circle with radius $\delta$, and measurement in it means that the user is estimated at $A$ while outside it indicates at other possible locations rather than $A$. Note that if we consider any one of the straight lines through $A$, then the distribution and localization are identical to those in one-dimension situation. Then we define the vector from $O$ to $A$ in physical space as $\vec r$ and to any location $A'$ on the boundary of $E$ as $\vec r'$. Therefore, $\vec \delta  = \vec r' - \vec r$ in Figure 1 can be clearly deemed as the difference between user's real location and our estimation result, \ie, the accuracy of our localization. In addition, since $O$ is the AP we consider, the gradient of RSS at $A$ (\ie, $\nabla \vec \mu (\vec r)$ in Figure 1) must be the same direction as $\overrightarrow{OA}$. We also define $\varphi$ as the inserted angle between $\vec \delta $ and $\nabla \vec \mu (\vec r)$, $\varphi  \in \left( { - \pi ,\pi } \right]$, where $\varphi < 0$ denotes the absolute value of $\varphi$ is less than $\pi$ clockwise (\ie, starting from $\nabla \vec \mu (\vec r)$ to $\vec \delta $ while $\varphi  > 0$ indicates the opposite.
-%
-%Similar as one-dimension condition, MLE can be the judgment of whether a user is located at $A$ in two-dimension physical space based on our localization system. For single-measurement situation the MLE can be expressed as:
-%\begin{align}
-%{f_{\vec r}}(P) \ge {f_{\vec r + \vec \delta }}(P),
-%\end{align}
-%where ${f_{\vec r}}(P)$ denotes the probability distribution function of RSS pertaining to the access point $P$ at location $\vec r$. However, unlike in one-dimension condition $\vec \delta$ is reduced to a scalar $\delta$ without directions ($\varphi$) taken into consideration, two-dimension problem requires MLE satisfy every single direction mapped by every possible value of $\varphi  \in \left( { - \pi ,\pi } \right]$. Hence, $\varphi$ should be embedded in our analysis.
-%
-%In order to render our explanation simpler and clearer, we rotate the coordinate system to a point where the new x-axis covers $\overrightarrow{OA}$ (Figure 2). Meanwhile $\nabla \vec \mu (\vec r)$ is also co-linear with the x-axis. Then aiming to derive the specific expression of MLE, we firstly make some assumptions:
-%\begin{itemize}
-%\item[(1)] The radius value $\delta$ should be small enough since we intend to meet high localizing accuracy (distinguishing different locations with very short distances from each other). Therefore, $E$ can be viewed as a very small region in physical space.
-%\item[(2)] $\left| {\nabla \vec \mu (\vec r)} \right|$ equals to the difference between $\mu (\vec r + \vec \delta )$ and $\mu (\vec r)$ in which $\vec \delta $ is co-linear with the new x-axis. Hereinafter in this section we denote $\nabla$ as $\left| {\nabla \vec \mu (\vec r)} \right|$ to simplify the mathematical expression.
-%\item[(3)] Every line perpendicular to $\nabla \vec \mu (\vec r)$ represents that all locations on this line inside $E$ have uniform RSS value. Factually according to the direct correlation between distance and RSS, the equi-value delineation of RSS should be a circle rather than a straight line. Nevertheless, due to the fact that $E$ is small enough, the equi-value curve inside $E$ can be approximated as a line segment.
-%\item[(4)] The distribution of RSS strength in two-dimension physical space should be a two-dimension normal distribution. However given that every line vertical to the new x-axis represents an identical RSS value for all locations on it, the normal distribution is degraded to one dimension if we consider the distribution on the new x-axis.
-%\end{itemize}
-%
-%It is clear that the RSS value of $\vec r$ (\ie, $\mu (\vec r)$) corresponds the largest measuring probability when $\vec r$ is which we aim to locate. \textbf{Original Graph in Section 4.1}. Hence we can derive
-%\begin{align}
-%{f_{\vec r}}(P) = \frac{1}{{\sqrt {2\pi } \sigma }}{e^{ - \frac{{{{(x - \mu (\vec r))}^2}}}{{2{\sigma ^2}}}}},
-%\end{align}
-%where $\sigma$ represents the intrinsic noise. Combining with Assumption 3 and 4, we can further derive ${f_{\vec r + \vec \delta }}(P)$ predicated on the representative condition in Figure 2.
-%\begin{align}
-%{f_{\vec r + \vec \delta }}(P) = \frac{1}{{\sqrt {2\pi } \sigma }}{e^{ - \frac{{{{(x - (\mu (\vec r) + \nabla \cos \varphi ))}^2}}}{{2{\sigma ^2}}}}}
-%\end{align}
-%Then to meet the conditions of MLE, we have:
-%\begin{align}
-%\frac{1}{{\sqrt {2\pi } \sigma }}{e^{ - \frac{{{{(x - \mu (\vec r))}^2}}}{{2{\sigma ^2}}}}} \ge \frac{1}{{\sqrt {2\pi } \sigma }}{e^{ - \frac{{{{(x - (\mu (\vec r) + \nabla \cos \varphi ))}^2}}}{{2{\sigma ^2}}}}}
-%\end{align}
-%for all $\varphi  \in \left( { - \pi ,\pi } \right]$. Simplify it we will have:
-%\begin{align}
-%{(x - \mu (\vec r))^2} \ge {(x - (\mu (\vec r) + \nabla \cos \varphi ))^2}
-%\end{align}
-%In order to gain clearer insight into this inequality, Figure 3 is displayed as follows in which the sample space is concerned.
-%
-%In Figure 3, the endpoints of this line segment represent the extreme conditions that $\varphi$ equals to 0 and $\pi$. Analogical to one-dimension analysis, we can derive
-%\begin{align}
-%{P_{high}} = \frac{{\mu (\vec r) + (\mu (\vec r) + \nabla \cos \varphi )}}{2} = \mu (\vec r) + \frac{{\nabla \cos \varphi }}{2}\\
-%{P_{low}} = \frac{{\mu (\vec r) + (\mu (\vec r) - \nabla \cos \varphi )}}{2} = \mu (\vec r) - \frac{{\nabla \cos \varphi }}{2}
-%\end{align}
-%which evinces that our localizing estimation will be judged to $A$ if and only if $P$ satisfies ${P_{low}} \le P \le {P_{high}}$. Here we limit $\varphi  \in [ - \frac{\pi }{2},\frac{\pi }{2}]$ to ensure ${P_{high}} \ge {P_{low}}$, if $\varphi  \notin [ - \frac{\pi }{2},\frac{\pi }{2}]$ then we can exchange the expression of ${P_{high}}$ and ${P_{low}}$ to maintain ${P_{high}} \ge {P_{low}}$. \textbf{---Rule 1)} Since the \textbf{equality(n)} holds for any $\varphi  \in \left( { - \pi ,\pi } \right]$, thus if fall into all possible intervals $[{P_{low}},{P_{high}}]$ then it will be classified into location $A$. The extreme condition is that while $\varphi  = \frac{\pi }{2}$, ${P_{high}} = {P_{low}}$, indicating that $P$ will be judged to $A$ if and only if $P = {P_{high}} = {P_{low}}$. That is to say our measurement must estimate the user��s location exactly at $r$, the real location. However, as error exists all the time in measurement and estimation, it is practically impossible to reach this extreme condition. Since that our previous analysis cannot be directly applied to realistic problems.
-%
-%\begin{figure}[!htbp]
-%\centering
-%\includegraphics [width = 7cm]{Figure4.pdf}
-%%\vspace{-2 mm}
-%\caption{Description.}
-%\label{fig:4}
-%%\vspace{-5 mm}
-%\end{figure}
-%
-%However, noticing that practical indoor localization divides a room into many small square blocks and denotes the center of each block as a possible estimated location (\ie, if an estimation falls into one of these blocks, then the location we determine this user is the center of this block.) Therefore, it is not necessarily for us to consider all locations on the boundary of $E$ as analysis above. Instead we may solely concentrate on four blocks adjacent to our target block ($A$ is the center), and denote each center of these four block as $B, C, D, E,$ displayed in Figure 4. Under this circumstances, we will only have to meet four MLE constraints which relax our feasible solution from a single point $P$ to an interval. We will discuss it in detail with Figure 5.
-%
-%Figure 5 is similar to Figure 3 and we define parameters in accordance with Figure 4. Then based on previous analysis we can easily write the simplified MLE constraints of $B, C, D, E$:
-%\begin{align}
-%\left\{\begin{array}{l}
-%{(x - \mu (\vec r))^2} \ge {(x - (\mu (\vec r) + \nabla \cos \phi ))^2}\\
-%{(x - \mu (\vec r))^2} \ge {(x - (\mu (\vec r) + \nabla \sin \phi ))^2}\\
-%{(x - \mu (\vec r))^2} \ge {(x - (\mu (\vec r) - \nabla \cos \phi ))^2}\\
-%{(x - \mu (\vec r))^2} \ge {(x - (\mu (\vec r) - \nabla \sin \phi ))^2}
-%\end{array}\right.
-%\end{align}
-%Therefore we can draw out Figure 6 in light of Figure 3. Then according to above analysis, it is clear that we can derive the feasible interval as
-%%\begin{equation}
-%%\begin{split}
-%%&I = [ {\mu (\vec r) - \frac{{\nabla \min \left\{ {\cos \phi ,\sin \phi } \right\}}}{2},\mu (\vec r)+\\ &\frac{{\nabla \min \left\{ {\cos \phi ,\sin \phi } \right\}}}{2}} ]
-%%\end{split}
-%%\end{equation}
-%\begin{equation}
-%\begin{split}
-%&I =\\ 
-%&\left[ {\mu (\vec r) - \frac{{\nabla \min \left\{ {\cos \phi ,\sin \phi } \right\}}}{2},
-%\mu (\vec r)+\frac{{\nabla \min \left\{ {\cos \phi ,\sin \phi } \right\}}}{2}} \right]
-% \end{split}
-% \end{equation} 
-%where $\phi  \in \left[ { - \frac{\pi }{2},\frac{\pi }{2}} \right]$ and follows Rule 1. It demonstrates that a user is measured in block $A$ if and only if the estimation of him falls into $I$. Thus the reliability of our one-time measurement analysis of two-dimension physical space can be interpreted as:
-%\begin{align}
-%\begin{split}
-%R &= \int_{{P_{low}}}^{{P_{high}}} {{f_r}(P)dP }\\
-% &=\int_{\mu (\vec r) - \frac{{\nabla \min \left\{ {\cos \phi ,\sin \phi } \right\}}}{2}}^{\mu (\vec r) + \frac{{\nabla \min \left\{ {\cos \phi ,\sin \phi } \right\}}}{2}} {\frac{1}{{\sqrt {2\pi } \sigma }}{e^{ - \frac{{{{(x - \mu (\vec r))}^2}}}{{2{\sigma ^2}}}}}dx}
-% \end{split}
-%\end{align}
-%
-%\subsubsection{Imperfect Data}
-%Then we extend our study to the influence of imperfect data in a two-dimension physical space. Recall in one-dimension analysis the imperfectness of received data is described as a deviation of line segment in the sample space. Therefore although our physical space has upgraded to two dimension, our sample space is still in one dimension as given above and what we receive are data of RSS, reflected directly in sample space. Thus we can imitate the method to derive error analysis similar as that of one-dimension situation.
-%
-%We still set our target region as  and consider $A$ abut to $B, C, D, E$ abut to $A$. Firstly it is reasonable to assume that the probability that a user is located at any location in $A$ to be identical, so the distribution of user's true location in  is a uniform one, whose probability distribution function is:
-%\begin{align}
-%p{f_A}(Q) = \left\{ \begin{array}{l}
-%\frac{1}{S},\quad Q \in A\\
-%0,\quad Q \notin A
-%\end{array} \right.
-%\end{align}
-%where $A$ denotes the target region, $S$ represents its area and $Q$ means a user's true location. Note that every $Q$ in two-dimension physical space can be mapped to the one-dimension sample space according to Assumption 3. Now we set the user's true location in physical space is ${Q_0}$ and its corresponding point in sample space is $X_0$. Figure 7 illustrates the influence of imperfectness of data procured, which results in the deviation of feasible interval $I$ in sample space from its true range. As in Figure 7 we denote the right endpoint of true range as $X_1$ and deviated range as $X_2$, hence we can discover if a point $X_0$  falls into interval $(X_1,X_2)$, then it will be falsely estimated: $X_0$ should have been classified into region $B$ while because of the deviation it is determined to be in region $A$. The same goes for the left side of region $A$, the boundary point of $A$ and $C$. Given our situation, then we can derive the probability of localizing error as:
-%\begin{align}
-%P(err) &= \iint_A {{f_A}}(Q)P(err|X = {X_0})dxdy\\
-%&= 2\iint_A {{f_A}}(Q)\int_{{X_1}}^{{X_2}} {\frac{1}{{\sqrt {2\pi } \sigma }}{e^{ - \frac{{{{(X - {X_0})}^2}}}{{2{\sigma ^2}}}}}} dXdxdy
-%\end{align}
 \section{Analysis of two dimension localization}
-\subsection{probability of error}
-The RSS value in the environment is hard to know, however, some research \ref{} has shown that the mean value and variance of the RSS follows a relative . Thus it is proper for us to make the assumption that the mean value of RSS in position $\vec r$ follows a continuous distribution, the Gaussian distribution,e.g. Since that some experiment result show that the RSS value may actualyFor a more general case, we may assume that the measured RSS value $P$ in location $\vec r$ follows the distribution of $f_{\vec r}(x;h)$, where the $h$ is the parameter of the distribution, or in other word, the hypothesis.
+\subsection{Probability Model of Localization Error}
+The RSS value in the environment is hard to know, however, some research \ref{} has shown that the mean value and variance of the RSS follows a relative stable variety. Thus it is proper for us to make the assumption that the value of RSS $P$ in position $\vec r$ follows a continuous probablity distribution $f_{\vec r}(P)$, the Gaussian distribution,e.g. Since that some experiment result show that the RSS value may actually follow other form of distribution,e.g. a two-mode Gaussian. For a more general manner, we may assume that the probability density function(PDF)$f_{\vec r}(P;h(\vec r))$ of the RSS value is arbitrary and is determined by parameter $h(\vec r)$ that is a continuous function of the mean value of RSS data in location $\vec r$, $\mu(\vec r)$. 
+\begin{figure}[!htbp]
+\centering
+\includegraphics [width = 7cm]{Figure4.pdf}
+\caption{Description.}
+\label{fig:4}
+\end{figure}
 As shown in Figure \ref{},  we devide the physical space into many small circles each centered at $\vec r$ with radius $\vec \delta$, within each block we have a threshold  $P_{high}$ and $P_{low}$ for the RSS value$P$.  According to the $MLE$ principlr used in \ref{}, which means that the probablity that the RSS falls into the ideal region must higher than the other reigon, $P_{high}$ and $P_{low}$ should satisfy that 
 \begin{equation}
 \begin{aligned}
-&f_{\vec r-\delta}(P_{high})=f_{\vec r}(P_{high})\\
-&f_{\vec r+\delta}(P_{low})=f_{\vec r}(P_{low}) 
+&f_{\vec r-\delta}(P_{high};h_{\vec r-\delta})=f_{\vec r}(P_{high};h_{\vec r})\\
+&f_{\vec r+\delta}(P_{low};h_{\vec r+\delta})=f_{\vec r}(P_{low};h_{\vec r}) 
 \end{aligned}
 \end{equation}
 . Thus we may define the reliability as the probability of the system correctly estimate the user's location,  
 \begin{equation}
-R = \int_{{P_{low}}}^{{P_{high}}} {{f_r}(P)dP }
+R = \int_{{P_{low}}}^{{P_{high}}} {{f_r}(P;h(r))dP }
 \end{equation}
 which means the probablity of RSS value tested in position $r$ lies within the interval $[P_{low},P_{high}]$
-However, in real circumstnaces, the $P_{high}$ and $P_{low}$ are acquired through the training process, during which may recieve the imperfect data and thus cause the result to be inaccurate.The speculated location of the RSS value may migrate from the original one.  A very obvious situaiton is that the RSS value from one certain region may falsely be recognized to from other area. We thus use this probability to define the error of the RSS data we collected.
+However, in real circumstnaces, the $P_{high}$ and $P_{low}$ are acquired through the training process, during which may recieve the imperfect data and thus cause the result to be inaccurate.The speculated location of the RSS value may migrate from the original one.  A very obvious situaiton as shown in Figure\ref{} is that the RSS value from one certain region may falsely be recognized to other area. 
+[To be completed with specific description of the example]
+We thus use this probability to define the error of the RSS data we collected.
 \begin{equation}
 \begin{aligned}
-P(error) &= \iint_A {{f_A}}(Q)P(err|X = {X_0})dxdy\\
+Pr_{\vec r}(error) &= \iint_A {{f_A}}(Q)P(err|X = {X_0})dxdy\\
 &= 2\iint_A {{f_A}}(Q)\int_{{X_1}}^{{X_2}} {\frac{1}{{\sqrt {2\pi } \sigma }}{e^{ - \frac{{{{(X - {X_0})}^2}}}{{2{\sigma ^2}}}}}} dXdxdy
 \end{aligned}
 \end{equation}
 \subsection{The analysis of the loss}
 We can re write the probability of error as 
 \begin{equation}
-P(error)=g(R,P)=h(|R-P|)
+P_{\vec r}(error)=Err(|h_{\vec r}(\mu)-h_{\vec r}(\mu^*)|)
 \end{equation}
-, where $R$ is the real RSS value and $\vec P$ is the measured data. In other word, $h(|R-P|)$ denotes the error between the real RSS value and the collected data. Obviously the real RSS value $x$ should satisfy that 
+, where $\mu^*$ is the real mean RSS value and $\mu$ is the speculated mean value of RSS by measured data. Obviously the ideal hypothesis $h_{\vec r}(\mu^*)$, e.g. the real mean value of RSS when $h(x)=x$. We then use $h^*$ to denote $h_{\vec r}(\mu^*)$ and $h$ to denote$h_{\vec r}(\mu)$ for simplicity. Obviously $h^*$ should satisfy that 
 \begin{equation}
-R=arg\min_{x\in R}E_Ph(|x-P|)
+h^*=arg\min_{\mu\in R}E(Err(|h(^*)-h|))
 \end{equation}
+, the following theorem shows the rationality for our definition of error.
 \begin{theorem}
-The expectation of the error $f(P;h)$ get its minimum when $P$ equals real RSS value $R$. 
+The expectation of the error $Err(|h-h^*|)$ get its minimum when $\mu$ equals real RSS value $\mu^*$. 
 \end{theorem}
-Now we set $|R-P|=klnf(R,P)$
+\begin{IEEEproof}
+Since that $h$ is the continuos function of $\mu(r)$, we first set that
+\[|h*-h|=klnf(P;h^*))\]
+, where $P$ is the speculated mean value of the RSS data in $\vec r$.
+\[E[h(kln(f(P;)))]\geq E[h(-klb)] \]
+\[E[h(kln(f(P,y)))]-h(klnb)]\geq 0\]
+according to the Lagrange interpolation formula , there exists $\xi$,such that
+\[E[h(kln(f(x,y)))]-h(klnb)]=E[h'(\xi)kln(\frac{f(t;y)}{f(x;y)})]\]
+obviously, $h(\xi)\>0$, consider the monotony and continuity of $Err$,there exists a minimum $m>0$ of $Err$, thus we have
+\[E[h'(\xi)kln\frac{f()}]\]
+\\
+\\
+\\
+\\
+\end{IEEEproof}
 Assume that we sample $N$ data $x_1,...,x_N$, we let $h*$ be the value that that minimize the $\frac{1}{N}\sum_{i=1}^N f(x_i;h)$.The theorem \ref{} above shows that when the number of data we collected is enough, the $t*$ we obtain from the data will approximate to the real RSS value $r$. 
 \begin{theorem}
 The average error of $\hat{t}$ obtained from collected sample has at least $1-2e^{-\frac{2\epsilon^2}{N}}$ the probablity that is within $\epsilon$ close to the average error of real RSS data $r$, that is
@@ -360,9 +248,22 @@ The average error of $\hat{t}$ obtained from collected sample has at least $1-2e
 Pr(\frac{1}{N}\sum_{i=1}^Nf(x_i;\hat{t})-E[f(x_i;r)]\leq\epsilon)\geq1-2e^{-\frac{2\epsilon^2}{N}}
 \end{equation}
 \end{theorem}
-This theorem shows us that
+\begin{IEEEproof}
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\end{IEEEproof}
+
 \subsection{example of Gaussian Distribution}
-We may now give a more specific example of the theories we deduce above.We assume that the RSS value R folllow the Gaussian distribution with mean value of $\mu_{r}$, and according to many previous studies, we assume that the $\mu_{\vec r}$ is coninuous over $\vec r$.
+We may now give a more specific example of the theories we deduce above.We assume that the RSS value R folllow the Gaussian distribution with mean value of $\mu_{r}$ and variance$\sigma$, and according to many previous studies\ref{}, we assume that the $\mu_{\vec r}$ is coninuous over $\vec r$.
 For the Gaussian distribution case, we give the specific form of these two threshold.
 \begin{equation}
 \begin{aligned}
@@ -370,25 +271,33 @@ For the Gaussian distribution case, we give the specific form of these two thres
 {P_{low}} = \frac{{\mu (\vec r) + (\mu (\vec r) - \nabla \cos \varphi )}}{2} = \mu (\vec r) - \frac{{\nabla \cos \varphi }}{2}
 \end{aligned}
 \end{equation}
+Thus we may deduce the specific form of the error we defined above
+\begin{equation}
+\begin{aligned}
+P(error) &= \iint_A {{f_A}}(Q)P(err|X = {X_0})dxdy\\
+&= 2\iint_A {{f_A}}(Q)\int_{{X_1}}^{{X_2}} {\frac{1}{{\sqrt {2\pi } \sigma }}{e^{ - \frac{{{{(X - {X_0})}^2}}}{{2{\sigma ^2}}}}}} dXdxdy
+\end{aligned}
+\end{equation}
+
 \section{Low-cost data purchasing problem}\label{probdef}
 In this section, we will give some preliminary about the task of our mechanism and prevailing principle used in statistical machine learning. We abstractly define the problem of the designing of the effective mechanism to acquire the RSS information collected by the crowds. 
 
 \subsection{Preliminaries}
-We first give the concept of loss and regret. The loss function that reflects the data quality is defined in the space $H\times Z\to R$, where $H$ is the hypothesis class and $Z$ is the space of the objects. We expect the loss function to get its minimum value when the data is exactly the ideal data. In our setting, the hypothesis $h$ is the mean value and variance of RSS fingerprinting data, and the hypothesis class $H$ is our expected internal of mean value and  variance. 
+We first give the concept of loss and regret. The loss function that reflects the data quality is defined in the space $H\times Z\to R$, where $H$ is the hypothesis class and $Z$ is the space of the objects. We expect the loss function to get its minimum value when the data is exactly the ideal data. The above theorem \ref{} has shown that the error of localization caused by the imperfect data we defined in\ref{} is the ideal choice. In our setting, the hypothesis $h$ is the parmeter of the probability distribution function of the RSS data in location $\vec r$, which is the function. For simplicity, we denote that in each time $t$ at location $\vec r$
 \begin{equation}
-f_t(h_t)=
+L_t(h_t)=Err_{\vec r}(|P-h|)
 \end{equation}
  After we acquire the loss function, we give the concept of the regret function.
 \begin{equation}\label{def:reg}
-R(T)=\sum_{t=1}^Tf_t(h_t)-\min_{h^*\in H}\sum_{t=1}^Tf_t(h^*_t)
+R(T)=\sum_{t=1}^TL_t(h_t)-\min_{h^*\in H}\sum_{t=1}^TL_t(h^*_t)
 \end{equation}
 where $h^*$ is the optimal choice, causing the least loss in our solution space $H$. The regret function reflexes how the data deviate from the desired value, the real mean and variance of RSS. We also make some assumptions for this problem
 \begin{enumerate}
-\item the agents have nothing to do with the costs
-\item the 
+\item the costs of the RSS data is arbitrarily given and have nothing to do with the data quality
+\item the agents do not fabricate the data
 \item the 
 \end{enumerate}
-
+The reason that we make such assumptions are rather straightforward, since most people in the crowdsensing acquire the data through unprofessional devices and they do not have the ability to know the quality of their data, so they may give the price at their will. 
 
 \subsection{Online Gradient Descent}
 Online learning is a widely used learning paradign. The goal of online learning is to produce the best hypothesis when data is in sequential order
@@ -584,11 +493,11 @@ E(B)&=\sum_t\int_{c_t}^Mcf(c)dc\\
 &=\frac{T^2}{R}\theta\varphi
 \end{align}
 where $\varphi=\sum_t\frac{1}{T}\nabla f_t(\sqrt{M}-\sqrt{c_t})$
-
+\subsection{}
 
 
 \section{Experiments and Simulations}\label{exp&sim}
-In this section, we conduct the experiments and simulations to validate the ,,,of our system model and data procurement mechanism. We use the data collected in FoxCom Shanghai,where we tested the RSS value of 10 AP in 13 different locations, the distribution of the location and AP points are shown in Figure\ref{}. Since that the workers collected our data did not ased for reward to us, we simply simulate the costs of the data through a normal distribution with mean value of $0.5$ and variance of $1$.
+In this section, we conduct the experiments and simulations to validate the performance of our system model and data procurement mechanism. We use the data collected in FoxCom Shanghai,where we tested the RSS value of 10 AP in 13 different locations, the distribution of the location and AP points are shown in Figure\ref{}. Since that the workers collected our data did not ased for reward to us, we simply simulate the costs of the data through a normal distribution with mean value of $0.5$ and variance of $1$. We implement
 \begin{figure}[htbp]
 \centering
 \includegraphics[width =230pt ,keepaspectratio ]{exp-loc.png}
