@@ -58,7 +58,7 @@
 
 
 \begin{abstract}
-Crowdsourcing is currently one of the most prevailing methodology used in the received signal strength (RSS) fingerprinting based Indoor localization. The quality of the RSS data collected from the crowds is crucial to the accuracy of the localization system. While efforts have been dedicated to the incentive mechanism for the crowdsourcing platform, the problem that how to judge whether the data we should use and how to economically get access to these data that we want still remains unknown.  In this paper, we give a quantitative measurement of the quality of data through the probabilistic model and propose a pricing mechanism to economically acquire the data given a limited budget under the basic framework of online machine learning. Our mechanism achieves the best performance in data purchasing than the state of the art method. And we further gives the theoretical analysis of the best quality of the data we can get access through the purchasing mechanism. Moreover, we give the alternative best money-saving strategy when the quality of data is required.(initial version)
+Crowdsourcing is currently one of the most prevailing methodology used in the received signal strength (RSS) fingerprinting based Indoor localization. The quality of the RSS data collected from the crowds is crucial to the accuracy of the localization system. While efforts have been dedicated to the incentive mechanism to acquire the data for the crowdsourcing platform, the problem that how to judge whether the data we should use and how to economically get access to these data that we want still remains unknown.  In this paper, we give a quantitative measurement of the quality of data through the probabilistic model and propose a pricing mechanism to economically acquire the data given a limited budget under the basic framework of online machine learning. Our mechanism achieves the best performance in data purchasing than the state of the art method. And we further gives the theoretical analysis of the best quality of the data we can get access through the purchasing mechanism. Moreover, we give the alternative best money-saving strategy when the quality of data is required.
 \end{abstract}
 
 
@@ -188,11 +188,11 @@ At the very beginning, the data purchaser needs to submit his \emph{Pricing Mech
 The RSS value in the environment is hard to know, however, some research \ref{} has shown that the mean value and variance of the RSS follows a relative stable variety. Thus it is proper for us to make the assumption that the value of RSS $P$ in position $\vec r$ follows a continuous probablity distribution $f_{\vec r}(P)$, the Gaussian distribution,e.g. Since that some experiment result show that the RSS value may actually follow other form of distribution,e.g. a two-mode Gaussian. For a more general manner, we may assume that the probability density function(PDF)$f_{\vec r}(P;h(\vec r))$ of the RSS value is arbitrary and is determined by parameter $h(\vec r)$ that is a continuous function of the mean value of RSS data in location $\vec r$, $\mu(\vec r)$. 
 \begin{figure}[!htbp]
 \centering
-\includegraphics [width = 7cm]{Figure4.pdf}
+\includegraphics [width = 7cm]{Figure2.pdf}
 \caption{Description.}
 \label{fig:4}
 \end{figure}
-As shown in Figure \ref{},  we devide the physical space into many small circles each centered at $\vec r$ with radius $\vec \delta$, within each block we have a threshold  $P_{high}$ and $P_{low}$ for the RSS value$P$.  According to the $MLE$ principlr used in \ref{}, which means that the probablity that the RSS falls into the ideal region must higher than the other reigon, $P_{high}$ and $P_{low}$ should satisfy that 
+As shown in Figure \ref{},  we devide the physical space into many small circles each centered at $\vec r$ with radius $\vec \delta$. We assume that within each block we have a threshold  $P_{high}$ and $P_{low}$ for the RSS value$P$.  According to the $MLE$ principle used in \ref{}, which means that the probablity that the RSS falls into the ideal region must higher than the adjacent reigon, $P_{high}$ and $P_{low}$ should satisfy that 
 \begin{equation}
 \begin{aligned}
 &f_{\vec r-\delta}(P_{high};h_{\vec r-\delta})=f_{\vec r}(P_{high};h_{\vec r})\\
@@ -204,44 +204,50 @@ As shown in Figure \ref{},  we devide the physical space into many small circles
 R = \int_{{P_{low}}}^{{P_{high}}} {{f_r}(P;h(r))dP }
 \end{equation}
 which means the probablity of RSS value tested in position $r$ lies within the interval $[P_{low},P_{high}]$
-However, in real circumstnaces, the $P_{high}$ and $P_{low}$ are acquired through the training process, during which may recieve the imperfect data and thus cause the result to be inaccurate.The speculated location of the RSS value may migrate from the original one.  A very obvious situaiton as shown in Figure\ref{} is that the RSS value from one certain region may falsely be recognized to other area. 
-[To be completed with specific description of the example]
-We thus use this probability to define the error of the RSS data we collected.
+However, in real circumstnaces, the $P_{high}$ and $P_{low}$ are acquired through the training process, during which may recieve the imperfect data and thus cause the result to be inaccurate.The speculated location of the RSS value may migrate from the original one, causing that the RSS value from one certain region may falsely be recognized to other area. \\
+ A very obvious situaiton as shown in Figure\ref{}. We assume that the deviation of the RSS value is $d$, and the current collected RSS data is $P$. We use $P'_{high}$ to denote the threshold deduced by $R$ and $P_{high}$ to denote the ideal threshold. Obviously, $P_{high}=P'_{high}-d$. The probability that the user can be mistakenly located using the data $P$ equals the probability that the user's RSS data $x$ lies within the interval of $[d,P'_{high}]$. We thus give this probability to define the error of the RSS data we collected.
 \begin{equation}
 \begin{aligned}
-Pr_{\vec r}(error) &= \iint_A {{f_A}}(Q)P(err|X = {X_0})dxdy\\
-&= 2\iint_A {{f_A}}(Q)\int_{{X_1}}^{{X_2}} {\frac{1}{{\sqrt {2\pi } \sigma }}{e^{ - \frac{{{{(X - {X_0})}^2}}}{{2{\sigma ^2}}}}}} dXdxdy
+Pr_{\vec r}(error) &=\int_{P'_{high}-|d|}^{P'_{high}}f_{\vec r}(x;h(P))dx
 \end{aligned}
 \end{equation}
 \subsection{The analysis of the loss}
-We can re write the probability of error as 
+We can observe from \ref{} that the error is a function of $d$, the deviation value of RSS, according to our assumption that the hypothesis $h$ is continuous function of $\mu$. We can rewrite the probability of error as the function of $h$ 
 \begin{equation}
-P_{\vec r}(error)=Err(|h_{\vec r}(\mu)-h_{\vec r}(\mu^*)|)
+P_{\vec r}(error)=Err(|h_{\vec r}(P)-h_{\vec r}(\mu^*)|)
 \end{equation}
-, where $\mu^*$ is the real mean RSS value and $\mu$ is the speculated mean value of RSS by measured data. Obviously the ideal hypothesis $h_{\vec r}(\mu^*)$, e.g. the real mean value of RSS when $h(x)=x$. We then use $h^*$ to denote $h_{\vec r}(\mu^*)$ and $h$ to denote$h_{\vec r}(\mu)$ for simplicity. Obviously $h^*$ should satisfy that 
+, where $\mu^*$ is the real mean RSS value and $h_{\vec r}(\mu^*)$ is the ideal hypothesis , e.g. the real mean value of RSS when $h(x)=x$. We then use $h^*$ to denote $h_{\vec r}(\mu^*)$ and $h$ to denote$h_{\vec r}(\mu)$ for simplicity. Obviously $\mu^*$ should satisfy that 
 \begin{equation}
-h^*=arg\min_{\mu\in R}E(Err(|h(^*)-h|))
+\mu^*=arg\min_{mu\in R}E_P(Err(|h(P)-h(\mu)|))
 \end{equation}
-, the following theorem shows the rationality for our definition of error.
+, where we defnie the $|h(P)-h(\mu)|$ as $klnf(P;h))$. The following theorem shows the rationality for our definition of error.
 \begin{theorem}
-The expectation of the error $Err(|h-h^*|)$ get its minimum when $\mu$ equals real RSS value $\mu^*$. 
+The expectation of the error $Err(|h(P)-h(\mu)|)$ over $P$ get its minimum when $\mu$ equals real RSS value $\mu^*$. 
 \end{theorem}
 \begin{IEEEproof}
-Since that $h$ is the continuos function of $\mu(r)$, we first set that
-\[|h*-h|=klnf(P;h^*))\]
-, where $P$ is the speculated mean value of the RSS data in $\vec r$.
-\[E[h(kln(f(P;)))]\geq E[h(-klb)] \]
-\[E[h(kln(f(P,y)))]-h(klnb)]\geq 0\]
+%Since that $h$ is the continuos function of $\mu(r)$, we first set that
+%, where $P$ is the speculated mean value of the RSS data in $\vec r$.
+\[E_P[Err(kln(f(P;h)))]\geq E_P[Err(-klnf(P;h^*))] \]
+\[E_P[Err(kln(f(P,h)))]-Err(klnf(P;h*))]\geq 0\]
 according to the Lagrange interpolation formula , there exists $\xi$,such that
-\[E[h(kln(f(x,y)))]-h(klnb)]=E[h'(\xi)kln(\frac{f(t;y)}{f(x;y)})]\]
+\begin{equation*}
+\begin{aligned}
+&E_P[Err(kln(f(P;h)))]-h(klnf(P;h^*))]\\
+=&E_P[Err'(\xi)kln(\frac{f(P;h)}{f(P;h^*)})]
+\end{aligned}
+\end{equation*}
 obviously, $h(\xi)\>0$, consider the monotony and continuity of $Err$,there exists a minimum $m>0$ of $Err$, thus we have
-\[E[h'(\xi)kln\frac{f()}]\]
-\\
-\\
-\\
-\\
+\[E[h'(\xi)kln\frac{f(P;h)}{f(P;h^*)}]\geq E_P[mkln\frac{f(P;h)}{f(P;h^*)}]\]
+According to Jessen inequality
+\begin{equation*}
+\begin{aligned}
+mkE_P[ln\frac{f(P;h)}{f(P;h^*)}]&\geq mkln(E_P[ln\frac{f(P;h)}{f(P;h^*)})\\
+&=mkln(\int_P\frac{f(P;h)}{f(P;h^*)}f(P;h*)dP)\\
+&=mkln1=0\\
+\end{aligned}
+\end{equation*}
 \end{IEEEproof}
-Assume that we sample $N$ data $x_1,...,x_N$, we let $h*$ be the value that that minimize the $\frac{1}{N}\sum_{i=1}^N f(x_i;h)$.The theorem \ref{} above shows that when the number of data we collected is enough, the $t*$ we obtain from the data will approximate to the real RSS value $r$. 
+Assume that we sample $N$ data $x_1,...,x_N$, we let $h*$ be the value that that minimize the $\frac{1}{N}\sum_{i=1}^N f(x_i;h)$.The theorem \ref{} above shows that when the number of data we collected is enough, the $t*$ we obtain from the data will approximate to the real RSS value $r$. We will use Hoeffding inequality to show the performance of the approximation
 \begin{theorem}
 The average error of $\hat{t}$ obtained from collected sample has at least $1-2e^{-\frac{2\epsilon^2}{N}}$ the probablity that is within $\epsilon$ close to the average error of real RSS data $r$, that is
 \begin{equation}
@@ -249,45 +255,76 @@ Pr(\frac{1}{N}\sum_{i=1}^Nf(x_i;\hat{t})-E[f(x_i;r)]\leq\epsilon)\geq1-2e^{-\fra
 \end{equation}
 \end{theorem}
 \begin{IEEEproof}
-\\
-\\
-\\
-\\
-\\
-\\
-\\
-\\
-\\
-\\
-\\
+We use $Err(P;h)$ to represent $Err(klnf(P;h))$ Assume that $Err(P;h)\in[m,M]$, and in fact $0\leq m\leq M\leq 1$
+according to Hoeffding inequality, for any $t$
+\begin{equation*}
+Pr(|\frac{1}{N}\sum_{i=1}^NErr(P;h)-E_P[Err(P;h)]|\geq \epsilon)\leq e^{-\frac{2\epsilon^2}{N}}
+\end{equation*}
+Assume that $\hat{h}$is our speculated hypothesis, and $h^*$is the real hypothesis, thus
+\begin{equation*}
+\begin{aligned}
+&Pr(\frac{1}{N}\sum_{i=1}^NErr(P;\hat{h})\leq E_P[Err(P;\hat{h})+\epsilon)\geq e^{-\frac{2\epsilon^2}{N}}\\
+&Pr(\frac{1}{N}\sum_{i=1}^NErr(P;h^*)\geq E_P[Err(P;h^*))-\epsilon)\geq e^{-\frac{2\epsilon^2}{N}}\\
+\end{aligned}
+\end{equation*}
+Considering that those two events in $Pr(\dot)$ is independent to each other
+\begin{equation*}\label{key}
+\begin{aligned}
+&Pr(\frac{1}{N}\sum_{i=1}^NErr(P;\hat{h})\leq E_P[Err(P;\hat{h}+\epsilon,\\
+&\frac{1}{N}\sum_{i=1}^NErr(P;h^*))\geq E_P[Err(Ph^*))-\epsilon)\\
+&\geq(1-e^{-\frac{2\epsilon^2}{N}})^2\geq 1-e^{-\frac{2\epsilon^2}{N}}\\
+\end{aligned}
+\end{equation*}
+Since that when
+\begin{equation*}
+\begin{aligned}
+&\frac{1}{N}\sum_{i=1}^NErr(P;\hat{h})\leq -E_P[Err(P;\hat{h}+\epsilon\\
+&\frac{1}{N}\sum_{i=1}^NErr(P;h^*)\leq -E_P[Err(P;\hat{h})-\epsilon)
+\end{aligned}
+\end{equation*}
+We have that
+\begin{equation*}
+\begin{aligned}
+0&\leq\frac{1}{N}\sum_{i=1}^NErr(P;\hat{h})\leq -E_P[Err(P;\hat{h}\\
+&\leqq\frac{1}{N}\sum_{i=1}^NErr(P;\hat{h})-Err(P;h^*)+\epsilon\\
+&\leq\epsilon
+\end{aligned}
+\end{equation*}
+Combining the equation \ref{key}, we thus have
+\begin{equation}
+Pr(\frac{1}{N}\sum_{i=1}^Nf(x_i;\hat{t})-E[f(x_i;r)]\leq\epsilon)\geq1-2e^{-\frac{2\epsilon^2}{N}}
+\end{equation}
 \end{IEEEproof}
-
-\subsection{example of Gaussian Distribution}
-We may now give a more specific example of the theories we deduce above.We assume that the RSS value R folllow the Gaussian distribution with mean value of $\mu_{r}$ and variance$\sigma$, and according to many previous studies\ref{}, we assume that the $\mu_{\vec r}$ is coninuous over $\vec r$.
-For the Gaussian distribution case, we give the specific form of these two threshold.
+The result shows that when $N$ is big enough, the probability that the $\hat{h}$ is close to $h^*$ will approximate to 1.
+\subsection{Example of Gaussian Distribution}
+We may now give a more specific example of the theories we deduce above.We assume that the RSS value $P$ folllow the Gaussian distribution with mean value of $\mu_{r}$ and variance$\sigma$. In this case, the hypothesis $h$ is exactly the mean value $\mu$. According to many previous studies\ref{}, we assume that the $\mu_{\vec r}$ is coninuous over $\vec r$. Given the fact that the $\delta$ is far smaller than $|\vec r|$, we may make an approximation that, for any position $\vec r'$ on the circle centered at $A$ with arbitrary radius $\delta$ in Figure \ref{}
+\begin{equation}
+\mu(\vec r')=\mu(r)+\nabla \mu(\vec r)\delta cos(\phi)
+\end{equation}
+, where $\phi$ is the angle between $\vec r$ and $\nabla \mu(\vec r)$. Now we consider the threshold of the RSS value. We can see from Firgure \ref{} that the threshold of the RSS is corresponding to the physical boundrary of the circle, the point B,C,D,E. Thus we can give the specific form of these two threshold.
 \begin{equation}
 \begin{aligned}
-{P_{high}} = \frac{{\mu (\vec r) + (\mu (\vec r) + \nabla \cos \varphi )}}{2} = \mu (\vec r) + \frac{{\nabla \cos \varphi }}{2}\\
-{P_{low}} = \frac{{\mu (\vec r) + (\mu (\vec r) - \nabla \cos \varphi )}}{2} = \mu (\vec r) - \frac{{\nabla \cos \varphi }}{2}
+{P_{high}} = \mu (\vec r) + \frac{{\nabla\mu\delta \min \left\{ {\cos \phi ,\sin \phi } \right\}}}{2}\\
+{P_{low}} = \mu (\vec r) - \frac{{\nabla\mu\delta \min \left\{ {\cos \phi ,\sin \phi } \right\}}}{2}
 \end{aligned}
 \end{equation}
 Thus we may deduce the specific form of the error we defined above
 \begin{equation}
 \begin{aligned}
-P(error) &= \iint_A {{f_A}}(Q)P(err|X = {X_0})dxdy\\
-&= 2\iint_A {{f_A}}(Q)\int_{{X_1}}^{{X_2}} {\frac{1}{{\sqrt {2\pi } \sigma }}{e^{ - \frac{{{{(X - {X_0})}^2}}}{{2{\sigma ^2}}}}}} dXdxdy
+Perror(P;\vec r,\mu) &=\int_{ \mu (\vec r) + \frac{{\nabla\mu\delta \min \left\{ {\cos \phi ,\sin \phi } \right\}}}{2}}^{P (\vec r) + \frac{{\nabla P \delta \min \left\{ {\cos \phi ,\sin \phi } \right\}}}{2}}\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-P)^2}{2\sigma^2}}dx
 \end{aligned}
 \end{equation}
+Further, we can derive the form 
 
 \section{Low-cost data purchasing problem}\label{probdef}
 In this section, we will give some preliminary about the task of our mechanism and prevailing principle used in statistical machine learning. We abstractly define the problem of the designing of the effective mechanism to acquire the RSS information collected by the crowds. 
 
 \subsection{Preliminaries}
-We first give the concept of loss and regret. The loss function that reflects the data quality is defined in the space $H\times Z\to R$, where $H$ is the hypothesis class and $Z$ is the space of the objects. We expect the loss function to get its minimum value when the data is exactly the ideal data. The above theorem \ref{} has shown that the error of localization caused by the imperfect data we defined in\ref{} is the ideal choice. In our setting, the hypothesis $h$ is the parmeter of the probability distribution function of the RSS data in location $\vec r$, which is the function. For simplicity, we denote that in each time $t$ at location $\vec r$
+We first give the concept of loss and regret. The loss function that reflects the data quality is defined in the space $H\times Z\to R$, where $H$ is the hypothesis class and $Z$ is the space of the objects. We expect the loss function to get its minimum value when the data is exactly the ideal data. The above theorem \ref{} has shown that the error of localization caused by the imperfectness of data we defined in\ref{} is the ideal choice. In our setting, the hypothesis $h$ is the parmeter of the probability distribution function of the RSS data in location $\vec r$. For simplicity, we denote that in each time $t$ at location $\vec r$
 \begin{equation}
-L_t(h_t)=Err_{\vec r}(|P-h|)
+L_t(h_t)=Perror(P\vec r )
 \end{equation}
- After we acquire the loss function, we give the concept of the regret function.
+ The $R$ is the value of After we acquire the loss function, we give the concept of the regret function.
 \begin{equation}\label{def:reg}
 R(T)=\sum_{t=1}^TL_t(h_t)-\min_{h^*\in H}\sum_{t=1}^TL_t(h^*_t)
 \end{equation}
@@ -295,7 +332,7 @@ where $h^*$ is the optimal choice, causing the least loss in our solution space 
 \begin{enumerate}
 \item the costs of the RSS data is arbitrarily given and have nothing to do with the data quality
 \item the agents do not fabricate the data
-\item the 
+\item the meachnism only pay at most $M$ to each data
 \end{enumerate}
 The reason that we make such assumptions are rather straightforward, since most people in the crowdsensing acquire the data through unprofessional devices and they do not have the ability to know the quality of their data, so they may give the price at their will. 
 
@@ -310,14 +347,14 @@ h_t=h_{t-1}-\eta \nabla f_t(h_{t-1})
 
 \subsection{Importance Weighting technique}
 
-In tradational online learning problem, all the data will be used to produce the total regret. In our low-cost purchasing problem, the mechanism do not get access to data and obtain a loss in each time $t$.  the estimation of loss is $E(\sum_{t=0}^T\delta_t f_t)=\sum_{t=0}^T q_t f_t$, where $\delta_t$ is the function showing whether the data is procured. However, the definition of regret in [\ref{def:reg}] still includes all the loss in each time $t$, whether it has been used or not.  In order to get an unbiased estimator of the regeret, we define
+In tradational online learning problem, all the data will be used to produce the total regret. In our low-cost purchasing problem, the mechanism do not get access to data and obtain a loss in each time $t$.  the estimation of loss is $E(\sum_{t=0}^T\delta_t f_t)=\sum_{t=0}^T q_t f_t$, where $\delta_t$ is the function showing whether the data is procured. However, the definition of regret in (\ref{def:reg}) still includes all the loss in each time $t$, whether it has been used or not.  In order to get an unbiased estimator of the regeret, we define
 \begin{equation}
 \hat{f_t}(h)=\begin{cases}{}
   \frac{f_t(h_t)}{q_t} & data\quad access\quad to\quad RPM  \\
   0 & else 
 \end{cases}
 \end{equation}
-.
+.With the unbiased estimator acquired, we can consider the mechanism as an OGD that recieves $\hat{f}$ in each round $t$.
 
 
 \subsection{Problem definition}
@@ -337,8 +374,11 @@ The meachanism and online learning algorithm produces a sequence of hypothesis $
 \begin{equation}
 \overline{h}=\sum_{t=1}^n h_t
 \end{equation}
-It has been proved that ...,
-
+It has been proved that\ref{}, the expectation of loss of $\overline{h}$ is less than the optimal $h^*$ plus $R(T)/T$, that is 
+\begin{equation*}
+E_{f_1,,,f_T}Loss(\overline{h})\leq L(h^*)+\frac{R(T)}{T}
+\end{equation*}
+This means that if $O(R(T))<O(T)$, then the $\overline{h}$ will approximate to the optimal hypothesis $h^*$ as $T$ goes to infinite.
 \section{The main setting: regret minimization senario}\label{mainsolution}
 In this senario, the mechanism has a fixed budget. The target of the mechanism is that in each round $t$, the  produce the minimum regret defined in \ref{def:reg} . In this section, we will give the exact form of the distribution $G_t$ and the analysis of the regret bound according to this distribution. 
 \subsection{Estimate the upper bound of regret}
@@ -416,25 +456,28 @@ L(\mu,\beta,\lambda)=&\sum_t \bigg( \nabla f_t\Big( \sqrt{\lambda c_t-\beta}+\mu
 &+\frac{c_t}{\sqrt{\lambda c_t-\beta}}-\frac{2}{\lambda}\sqrt{\lambda c_t-\beta}\big)\Big)\bigg)-\mu B
 \end{aligned}
 \end{equation}
+when $\beta$ and $\lambda$ get its optimal value, it must holds that $\partial$.
 According to the complementary relaxation condition, $\mu\neq 0$, which means that the constraint condition in $\ref{}$ for the optimal solution is strict. 
 To get the analytic solution of the optimal value of $\beta$ and $\lambda$ is infeasible , thus we use the numeric solution for the equation \ref{}.
 
 \subsection{Analysis of the result}
-We first simply set the $\beta=0$ for a special case. Through simple calculation, we can have an estimation of $\lambda_0$ as following
+There are many things we can learn from the form given in \ref{} and parameters $\beta$ and $\lambda$. When the parameter $\beta$ and $\lambda$ is fixed, a higher $\nabla L_t$ means a higher probability that a data is acquired, which is accordance with the definition of the gradient, the fastest direction that the current $h$ to to the ideal one. Taking the parameter $\lambda$, a smaller $\lambda$ means that the mechanism would tend to pay a high price for the data, which can be seen as the data . The parameter $\beta$ can be seen as the most dominant factor that determine the minimum price $$ that the mechanism would pay. Generally, more succifient budget $B$ would lead to a higher $\beta$ and smaller $\lambda$. When budget $B$ gose to infinite, the $\lambda$ and $\beta$ goes to infinite
+
+ We first simply set the $\beta=0$ for a special case. Through simple calculation, we can have an estimation of $\lambda_0$ as following
 \begin{equation}
 \lambda_0=\frac{T}{B}(2\theta_0-\theta)
 \end{equation}
 where $\theta_0=\frac{1}{T}\sum_t \nabla f_t\sqrt{M}$, $\theta=\frac{1}{T}\sum_t \nabla f_t\sqrt{c_t}$
 Since that $\partial L/\partial \beta >0$, $\partial L/\partial \lambda <0$, we obtain that the optimal solution $(\beta^*,\lambda^*)$ statisfy that $\beta^*>\beta^0$, $\lambda^*<\lambda_0$ Thus we have the estimate of the upper bound of the regret of RPM in theorem \ref{thm:reg-bnd}.
 \begin{theorem}\label{thm:reg-bnd}
-The regret of RPM in produced by the algorithm in \ref{} is bounded by
+For a fixed $\beta$, the regret of RPM produced by the algorithm in \ref{} is bounded by
 \begin{equation}
-Regret<O(\frac{T}{\sqrt{B}}(2\theta_0-\theta)\alpha)
+Regret<O(\frac{T}{\sqrt{B}}(2\theta_0-\theta)\sqrt{1-\frac{\beta B^2}{T\theta^2}})
 \end{equation}
-where $\alpha=O(\sqrt{1-\frac{\beta B^2}{T\theta^2}})$
+
 \end{theorem}
 \begin{IEEEproof}
-To be determined
+
 \end{IEEEproof}
 One problem in this situation is that we may not get enough prior knowledge to both $c_t$ and $\nabla f_t$. One way to solve the problem is that we initially set $\beta$ to a fixed value and $\lambda$ to a very small value, e.g. $0.0001$.  Then in each time $t$, we update the value of $\lambda$ with 
 \begin{align}
@@ -444,19 +487,23 @@ One problem in this situation is that we may not get enough prior knowledge to b
 
 
 \section{The budget minimization senario}
-In this senario, we consider the problem to find the most money-saving way to acquire the data inorder to achieve a satisfactory regret bound $R$. The objective function is in the form of a integral, which is not an easy problem of the classical optimization problem. Besides, to solve the very exact form of the budget . Thus we use the of the budget B as following
+In this senario, we consider the situation that the main purpose of the mechanism is to find a strategy that can achieve  . According to most money-saving way to acquire the data inorder to achieve a satisfactory regret bound $R$. One can easily observe that ths problemThe objective function is in the form of a integral, which is not an easy problem of the classical optimization problem. Besides, to solve the very exact form of the budget do not make sense. Thus we use the aproximation of the budget B as following
 \begin{equation}
 \sum_t c_t q_t \leq B \leq \sum_t Mq_t
 \end{equation}
-Thus what we have to do is to solve the optimization problem of the form
+\begin{theorem}
+\end{theorem}
 \begin{equation}
 \begin{aligned}
-&\min_{q_t} c_t\\
+&\min_{q_t} \sum_tc_tq_t\\
 s.t. &\sum_t \frac{\nabla f_t^2}{q_t}\leq R\\
 	&0\leq q_t \leq 1
 \end{aligned}
 \end{equation}
 \subsection{The optimal mechanism}
+We give our mechanism as the following theorem
+
+\begin{IEEEproof}
 Consider the convexity of the objective function, we give the Lagrangian
 \begin{equation}
 L=\sum_t c_t q_t -\lambda(-\sum_t\frac{\nabla f_t^2}{q_t}+R-\sum_t\mu_t(1-q_t))
@@ -486,18 +533,18 @@ And the PDF is
 \begin{equation}
 f(c)=\frac{1}{2}\sqrt{\frac{{\lambda}}{c^3}}\nabla f_t
 \end{equation}
+\end{IEEEproof}
 \subsection{result analysis}
 Now we can make a relatively more precise estimate the budget $B$
 \begin{align}
 E(B)&=\sum_t\int_{c_t}^Mcf(c)dc\\
 &=\frac{T^2}{R}\theta\varphi
 \end{align}
-where $\varphi=\sum_t\frac{1}{T}\nabla f_t(\sqrt{M}-\sqrt{c_t})$
-\subsection{}
+where $\varphi=\sum_t\frac{1}{T}\nabla f_t(\sqrt{M}-\sqrt{c_t})$. Analogous to the \ref{}, in each round $t$, we set $\theta^{(t)}$ and $\phi^{(t)}$.
 
 
 \section{Experiments and Simulations}\label{exp&sim}
-In this section, we conduct the experiments and simulations to validate the performance of our system model and data procurement mechanism. We use the data collected in FoxCom Shanghai,where we tested the RSS value of 10 AP in 13 different locations, the distribution of the location and AP points are shown in Figure\ref{}. Since that the workers collected our data did not ased for reward to us, we simply simulate the costs of the data through a normal distribution with mean value of $0.5$ and variance of $1$. We implement
+In this section, we conduct the experiments and simulations to validate the performance of our system model and data procurement mechanism. We use the data collected in FoxCom Shanghai,where we tested the RSS value of 10 AP in 13 different locations, the distribution of the location and AP points are shown in Figure\ref{}. Since that the workers collected our data did not ased for reward to us, we simply simulate the costs of the data through a normal distribution with mean value of $0.5$ and variance of $1$.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width =230pt ,keepaspectratio ]{exp-loc.png}
@@ -560,6 +607,8 @@ D.Liberzon, ``Calculus of variations and optimal control theory: a concise intro
 
 \bibitem{roth2012conducting}
 A.Roth, and G.Schoenebeck, ``Conducting truthful surveys, cheaply,'' in \emph{Proceedings of the 13th ACM Conference on Electronic Commerce}, 2012, pp.826--843.
+
+\bibitem{}
 
 
 \end{thebibliography}
