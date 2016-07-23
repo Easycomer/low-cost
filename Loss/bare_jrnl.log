@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.5.12)  21 JUL 2016 17:38
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.5.12)  23 JUL 2016 10:16
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -919,8 +919,7 @@ Package zref Info: New property: mdf@pagevalue on input line 895.
 (c:/texlive/2015/texmf-dist/tex/latex/lipsum/lipsum.sty
 Package: lipsum 2014/07/27 v1.3 150 paragraphs of Lorem Ipsum dummy text
 \c@lips@count=\count193
-)
-No file bare_jrnl.aux.
+) (./bare_jrnl.aux)
 \openout1 = `bare_jrnl.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 245.
@@ -935,4 +934,4 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 245.
 LaTeX Font Info:    ... okay on input line 245.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 245.
 LaTeX Font Info:    ... okay on input line 245.
-LaTeX Font Info:    Checking def
+LaTeX Font Info:    Checking defaults
