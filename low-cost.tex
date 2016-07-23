@@ -299,11 +299,13 @@ Pr(\frac{1}{N}\sum_{i=1}^Nf(x_i;\hat{t})-E[f(x_i;r)]\leq\epsilon)\geq1-2e^{-\fra
 \end{IEEEproof}
 The result shows that when $N$ is big enough, the probability that the $\hat{h}$ is close to $h^*$ will approximate to 1.
 \subsection{Example of Gaussian Distribution}
-We may now give a more specific example of the theories we deduce above.We assume that the RSS value $P$ folllow the Gaussian distribution with mean value of $\mu_{r}$ and variance$\sigma$. In this case, the hypothesis $h$ is exactly the mean value $\mu$. According to many previous studies\ref{}, we assume that the $\mu_{\vec r}$ is coninuous over $\vec r$. Given the fact that the $\delta$ is far smaller than $|\vec r|$, we may make an approximation that, for any position $\vec r'$ on the circle centered at $A$ with arbitrary radius $\delta$ in Figure \ref{}
+We may now give a more specific example of the theories we deduce above. We assume that the RSS value of the location $\vec r$ follows the Gaussian distribution with mean value of $\mu{(\vec r)}$ and variance $\sigma$. In this case, the hypothesis $h$ is exactly $\mu{(\vec r)}$. According to many previous studies\ref{}, it is reasonable for us to assume that $\mu{(\vec r)}$ is continuous over $\vec r$. Meanwhile, given that $\delta$ is far smaller than $|\vec r|$, we may make an approximation that for any position $\vec r'$ on the circle centered at $A$ with an arbitrary radius $\delta$ in Figure \ref{}
 \begin{equation}
 \mu(\vec r')=\mu(r)+\nabla \mu(\vec r)\delta cos(\phi)
 \end{equation}
-, where $\phi$ is the angle between $\vec r$ and $\nabla \mu(\vec r)$. Now we consider the threshold of the RSS value. We can see from Firgure \ref{} that the threshold of the RSS is corresponding to the physical boundrary of the circle, the point B,C,D,E. Thus we can give the specific form of these two threshold.
+, where $\phi$ is the angle between $\vec r$ and $\nabla \mu(\vec r)$.
+
+Now we consider the thresholds of RSS value within which the estimated location will be at $A$ rather than $B$, $C$, $D$ and $E$ which are abut to $A$ in Figure \ref{}. Figure \ref{} presents the distribution of RSS value near $A$, $B$, $C$, $D$ and $E$ respectively. We can clearly see that determining the location at $A$ requires the RSS value falls into an interval with a higher threshold ${P_{high}}$ and a lower one ${P_{low}}$, and the interval is required that the RSS value of $A$ in it should be higher than that of $B$, $C$, $D$ and $E$. Therefore, it is easily to derive ${P_{high}}$ and ${P_{low}}$ as follows.
 \begin{equation}
 \begin{aligned}
 {P_{high}} = \mu (\vec r) + \frac{{\nabla\mu\delta \min \left\{ {\cos \phi ,\sin \phi } \right\}}}{2}\\
